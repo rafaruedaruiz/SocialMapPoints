@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "54476256326",
+    "project_id": "social-map-points",
+    "storage_bucket": "social-map-points.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:54476256326:android:4443b86b3b2218626b0647",
+        "android_client_info": {
+          "package_name": "com.rafa.socialmappoints"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "54476256326-ft9oij3edb48i9nt8nkrvodk8ibeei86.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOTeo9lEZWZa1T6Vx1MVCF5UCIJ8gyv_g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "54476256326-ft9oij3edb48i9nt8nkrvodk8ibeei86.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
