@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Social Map Points</string>
+    <string name="prefs_file">com.rafa.socialMapPoints.PREFERENCE_FILE_KEY</string>
 </resources>
