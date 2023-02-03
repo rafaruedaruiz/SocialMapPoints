@@ -11,6 +11,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.NoActionBar"
         tools:targetApi="31">
+        <activity android:name=".RegisterActivity"
+            android:exported="true">
+        </activity>
         <activity
             android:name=".HomeActivity"
             android:exported="false" />
