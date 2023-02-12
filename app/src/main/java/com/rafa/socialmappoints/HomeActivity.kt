@@ -124,7 +124,7 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun setup(email: String, provider: String){
         title = "Inicio"
         emailTextView.text = email.split("@")[0]
-        providerTextView.text = provider
+        //providerTextView.text = provider
 
         logoutButton.setOnClickListener{
             val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
