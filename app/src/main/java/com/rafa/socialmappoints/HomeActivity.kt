@@ -3,10 +3,12 @@ package com.rafa.socialmappoints
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -15,6 +17,9 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
+import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_home.*
 
@@ -26,6 +31,8 @@ enum class ProviderType{
 class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var map: GoogleMap
+    var marker: Marker? = null
+
     companion object {
         const val REQUEST_CODE_LOCATION = 0
     }
@@ -119,6 +126,16 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
         if (cameraUpdate != null) {
             map.animateCamera(cameraUpdate)
         }
+
+        val success = googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.map_style))
+        if (!success) {
+            Log.e("MapActivity", "Style parsing failed.")
+        }
+
+        map.setOnMapClickListener { latLng ->
+            marker?.remove()
+            marker = map.addMarker(MarkerOptions().position(latLng))
+        }
     }
 
     private fun setup(email: String, provider: String){
@@ -133,6 +150,17 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
 
             FirebaseAuth.getInstance().signOut()
             onBackPressed()
+        }
+
+        addButton.setOnClickListener{
+            if (marker != null) {
+                val addPointIntent = Intent(this, AddPointActivity::class.java)
+                addPointIntent.putExtra("latitude", marker!!.position.latitude)
+                addPointIntent.putExtra("longitude", marker!!.position.longitude)
+                startActivity(addPointIntent)
+            } else {
+                Toast.makeText(this, "Por favor, primero selecciona el punto en el mapa.", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }
