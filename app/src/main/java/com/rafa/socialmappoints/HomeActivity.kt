@@ -123,7 +123,7 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun setup(email: String, provider: String){
         title = "Inicio"
-        emailTextView.text = email
+        emailTextView.text = email.split("@")[0]
         providerTextView.text = provider
 
         logoutButton.setOnClickListener{
