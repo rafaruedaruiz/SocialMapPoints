@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "54476256326",
+    "firebase_url": "https://social-map-points-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "social-map-points",
     "storage_bucket": "social-map-points.appspot.com"
   },
@@ -14,7 +15,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "54476256326-ft9oij3edb48i9nt8nkrvodk8ibeei86.apps.googleusercontent.com",
+          "client_id": "54476256326-217ree776jlns0fbkfs8tkeqf2vknkd4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rafa.socialmappoints",
+            "certificate_hash": "4196ebed10beeb17109c3e16675fc28370c26e45"
+          }
+        },
+        {
+          "client_id": "54476256326-g548m1b6tcddu9itf82pn2smvrpa9ee4.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
