@@ -21,6 +21,10 @@ import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_home.*
 
 enum class ProviderType{
@@ -40,7 +44,28 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
+        // Cargar mapa
         createFragment()
+
+        // Cargar puntos del mapa
+        val databaseReference = FirebaseDatabase.getInstance().getReference("social_points")
+
+        databaseReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val socialPoints = dataSnapshot.children.mapNotNull {
+                    it.getValue(SocialPoint::class.java)
+                }
+                socialPoints.forEach { socialPoint ->
+                    val position = LatLng(socialPoint.latitude, socialPoint.longitude)
+                    map.addMarker(MarkerOptions().position(position).title(socialPoint.title))
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Controlar error
+            }
+        })
+
 
         // Setup
         val bundle = intent.extras
