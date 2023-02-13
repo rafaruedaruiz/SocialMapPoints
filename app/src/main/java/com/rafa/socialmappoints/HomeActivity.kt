@@ -9,6 +9,9 @@ import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -52,12 +55,12 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
 
         databaseReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val socialPoints = dataSnapshot.children.mapNotNull {
-                    it.getValue(SocialPoint::class.java)
-                }
-                socialPoints.forEach { socialPoint ->
-                    val position = LatLng(socialPoint.latitude, socialPoint.longitude)
-                    map.addMarker(MarkerOptions().position(position).title(socialPoint.title))
+                dataSnapshot.children.forEach { childSnapshot ->
+                    val socialPoint = childSnapshot.getValue(SocialPoint::class.java)
+                    if (socialPoint != null) {
+                        val position = LatLng(socialPoint.latitude, socialPoint.longitude)
+                        map.addMarker(MarkerOptions().position(position).title(socialPoint.title).snippet(childSnapshot.key))
+                    }
                 }
             }
 
@@ -142,8 +145,11 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
     @SuppressLint("MissingPermission")
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
+
+        // Habilitar ubicación del usuario
         enableMyLocation()
 
+        // Zoom en la ubicación del usuario
         val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         val location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
         val latLng = location?.let { LatLng(it.latitude, location.longitude) }
@@ -152,15 +158,19 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
             map.animateCamera(cameraUpdate)
         }
 
+
+        // Map style sin los puntos de interes que trae google maps por defecto
         val success = googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.map_style))
         if (!success) {
             Log.e("MapActivity", "Style parsing failed.")
         }
 
+        // Punto temporal para ser añadido
         map.setOnMapClickListener { latLng ->
             marker?.remove()
             marker = map.addMarker(MarkerOptions().position(latLng))
         }
+
     }
 
     private fun setup(email: String, provider: String){
