@@ -3,6 +3,7 @@ package com.rafa.socialmappoints
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
@@ -28,10 +29,14 @@ class AddPointActivity : AppCompatActivity() {
             val longitude = intent.getDoubleExtra("longitude", 0.0)
             val socialPoint = SocialPoint(userID, title, description, latitude, longitude)
 
-            saveSocialPoint(socialPoint)
-
-            val homeIntent = Intent(this, HomeActivity::class.java)
-            startActivity(homeIntent)
+            if(title.isNotEmpty()){
+                saveSocialPoint(socialPoint)
+                Toast.makeText(this, "Punto Social añadido con éxito", Toast.LENGTH_SHORT).show()
+                val homeIntent = Intent(this, HomeActivity::class.java)
+                startActivity(homeIntent)
+            }else{
+                Toast.makeText(this, "Por favor, rellene los campos necesarios", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

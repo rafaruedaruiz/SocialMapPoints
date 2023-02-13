@@ -19,6 +19,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.Marker
@@ -60,6 +61,7 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
                     if (socialPoint != null) {
                         val position = LatLng(socialPoint.latitude, socialPoint.longitude)
                         map.addMarker(MarkerOptions().position(position).title(socialPoint.title).snippet(childSnapshot.key))
+                            ?.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.social_point_marker_icon))
                     }
                 }
             }
@@ -175,7 +177,8 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun setup(email: String, provider: String){
         title = "Inicio"
-        emailTextView.text = email.split("@")[0]
+
+        emailTextView.text = FirebaseAuth.getInstance().currentUser?.email.toString().split("@")[0]
         //providerTextView.text = provider
 
         logoutButton.setOnClickListener{
@@ -184,7 +187,8 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
             prefs.apply()
 
             FirebaseAuth.getInstance().signOut()
-            onBackPressed()
+            val authIntent = Intent(this, AuthActivity::class.java)
+            startActivity(authIntent)
         }
 
         addButton.setOnClickListener{
@@ -194,7 +198,7 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
                 addPointIntent.putExtra("longitude", marker!!.position.longitude)
                 startActivity(addPointIntent)
             } else {
-                Toast.makeText(this, "Por favor, primero selecciona el punto en el mapa.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Por favor, primero selecciona el punto en el mapa", Toast.LENGTH_SHORT).show()
             }
         }
     }
