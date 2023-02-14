@@ -6,22 +6,6 @@
     android:layout_height="match_parent"
     android:background="#ded8ca">
 
-    <Button
-        android:id="@+id/deleteButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:background="@drawable/button_rounded"
-        android:backgroundTint="#ee4035"
-        android:text="Eliminar punto"
-        android:textColor="#050e1f"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/descriptionTextView" />
-
     <ImageView
         android:id="@+id/imageView5"
         android:layout_width="299dp"
@@ -56,4 +40,32 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
+
+    <ImageButton
+        android:id="@+id/deleteButton"
+        android:layout_width="101dp"
+        android:layout_height="95dp"
+        android:layout_marginEnd="60dp"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="#00FFFFFF"
+        android:contentDescription="@string/app_name"
+        android:scaleType="fitCenter"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/delete_button" />
+
+    <ImageButton
+        android:id="@+id/editButton"
+        android:layout_width="104dp"
+        android:layout_height="107dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginBottom="18dp"
+        android:backgroundTint="#00FFFFFF"
+        android:contentDescription="@string/app_name"
+        android:scaleType="fitCenter"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/edit_button" />
 </androidx.constraintlayout.widget.ConstraintLayout>
