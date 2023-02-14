@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/my_social_points"
+        style="@style/menuItemStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/social_point_marker_icon"
+        android:title="Mis Puntos"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/my_social_events"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:title="Mis Eventos"
+        style="@style/menuItemStyle"/>
+    <item
+        android:id="@+id/log_out"
+        style="@style/menuItemStyle"
+        android:icon="@drawable/logout_button"
+        android:title="Cerrar sesión" />
+</menu>

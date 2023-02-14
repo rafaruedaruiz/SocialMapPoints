@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+        <style name="menuItemStyle">
+            <item name="android:textColor">#050e1f</item>
+            <item name="android:background">#ded8ca</item>
+        </style>
+</resources>

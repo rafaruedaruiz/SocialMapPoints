@@ -39,36 +39,28 @@
 
             <TextView
                 android:id="@+id/emailTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="3dp"
+                android:layout_width="210dp"
+                android:layout_height="48dp"
+                android:layout_marginBottom="2dp"
+                android:clickable="true"
                 android:text="Email"
                 android:textColor="#050e1f"
                 android:textSize="23sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imageView4"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/imageView4"
-                android:layout_width="49dp"
-                android:layout_height="46dp"
-                android:layout_marginStart="40dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/logoutButton"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/logo_reducido" />
+                app:layout_constraintStart_toEndOf="@+id/desplegableImageButton" />
 
             <ImageButton
-                android:id="@+id/logoutButton"
-                android:layout_width="68dp"
-                android:layout_height="67dp"
-                android:background="#00FFFFFF"
+                android:id="@+id/desplegableImageButton"
+                android:layout_width="58dp"
+                android:layout_height="60dp"
+                android:layout_marginBottom="2dp"
+                android:backgroundTint="#00FFFFFF"
                 android:contentDescription="@string/app_name"
                 android:scaleType="fitCenter"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:srcCompat="@drawable/logout_button" />
+                app:srcCompat="@drawable/desplegable" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>

@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -48,6 +49,8 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
+        val userButton = findViewById<TextView>(R.id.emailTextView)
+
         // Cargar mapa
         createFragment()
 
@@ -62,6 +65,69 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
         prefs.putString("email", email)
         prefs.putString("provider", provider)
         prefs.apply()
+
+        // Nombre de usuario con desplegable
+        userButton.setOnClickListener {
+            val popup = PopupMenu(this, userButton)
+            popup.menuInflater.inflate(R.menu.user_menu, popup.menu)
+            popup.setOnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    R.id.my_social_points -> {
+                        // Ir a la actividad "Mis SocialPoint"
+                        true
+                    }
+                    R.id.my_social_events -> {
+                        // Ir a la actividad "Mis SocialEvent"
+                        true
+                    }
+                    R.id.log_out -> {
+                        val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
+                        prefs.clear()
+                        prefs.apply()
+
+                        FirebaseAuth.getInstance().signOut()
+                        val authIntent = Intent(this, AuthActivity::class.java)
+                        startActivity(authIntent)
+
+                        true
+                    }
+                    else -> false
+                }
+            }
+            popup.show()
+        }
+
+        // Imagen desplegable tambien abre el menu
+        desplegableImageButton.setOnClickListener {
+            val popup = PopupMenu(this, desplegableImageButton)
+            popup.menuInflater.inflate(R.menu.user_menu, popup.menu)
+            popup.setOnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    R.id.my_social_points -> {
+                        // Ir a la actividad "Mis SocialPoint"
+                        true
+                    }
+                    R.id.my_social_events -> {
+                        // Ir a la actividad "Mis SocialEvent"
+                        true
+                    }
+                    R.id.log_out -> {
+                        val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
+                        prefs.clear()
+                        prefs.apply()
+
+                        FirebaseAuth.getInstance().signOut()
+                        val authIntent = Intent(this, AuthActivity::class.java)
+                        startActivity(authIntent)
+
+                        true
+                    }
+                    else -> false
+                }
+            }
+            popup.show()
+        }
+
     }
 
     private fun createFragment(){
@@ -186,16 +252,6 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
 
         emailTextView.text = FirebaseAuth.getInstance().currentUser?.email.toString().split("@")[0]
         //providerTextView.text = provider
-
-        logoutButton.setOnClickListener{
-            val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
-            prefs.clear()
-            prefs.apply()
-
-            FirebaseAuth.getInstance().signOut()
-            val authIntent = Intent(this, AuthActivity::class.java)
-            startActivity(authIntent)
-        }
 
         addButton.setOnClickListener{
             if (marker != null) {
