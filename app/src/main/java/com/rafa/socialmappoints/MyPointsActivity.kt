@@ -30,14 +30,15 @@ class MyPointsActivity : AppCompatActivity() {
         val socialPointsRef = FirebaseDatabase.getInstance().getReference("social_points")
         val socialPoints = mutableListOf<SocialPoint>()
 
+        val userId = FirebaseAuth.getInstance().currentUser?.uid
+
         socialPointsRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (ds in dataSnapshot.children) {
                     val socialPoint = ds.getValue(SocialPoint::class.java)
-                    if (socialPoint != null) {
+                    if (socialPoint != null && socialPoint.userID == userId) {   // SOLO COGE LOS DEL USUARIO
                         socialPoints.add(socialPoint)
                     }
-                    Log.d("MyPointsActivity", "Social PointXXXXXXXXXXXXXXXXXXXXXXXX: $socialPoint")
                 }
                 val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewMyPoints)
                 recyclerView.layoutManager = LinearLayoutManager(this@MyPointsActivity)
@@ -45,7 +46,7 @@ class MyPointsActivity : AppCompatActivity() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Log.e("MyPointsActivity", "Error al obtener los Social PointsXXXXXXXXXXXXXXXXXXXXXXXX", error.toException())
+                // Controlar error
             }
         })
 

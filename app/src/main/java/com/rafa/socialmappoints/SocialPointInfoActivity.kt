@@ -55,8 +55,8 @@ class SocialPointInfoActivity : AppCompatActivity(){
         deleteButton.setOnClickListener {
             if (socialPoint != null) {
                 val builder = AlertDialog.Builder(this@SocialPointInfoActivity)
-                builder.setTitle("Vas a eliminar un punto")
-                builder.setMessage("¿Estás seguro de que quieres eliminar este punto social?")
+                builder.setTitle("Eliminar punto")
+                builder.setMessage("¿Está seguro de que quiere eliminar este punto social?")
                 builder.setPositiveButton("Eliminar") { _, _ ->
                     socialPoint.removeValue()
                     Toast.makeText(this, "Punto Social eliminado con éxito", Toast.LENGTH_SHORT).show()

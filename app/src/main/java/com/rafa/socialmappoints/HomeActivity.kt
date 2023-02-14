@@ -2,6 +2,7 @@ package com.rafa.socialmappoints
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -83,14 +84,23 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
                         true
                     }
                     R.id.log_out -> {
-                        val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
-                        prefs.clear()
-                        prefs.apply()
 
-                        FirebaseAuth.getInstance().signOut()
-                        val authIntent = Intent(this, AuthActivity::class.java)
-                        startActivity(authIntent)
+                        val builder = AlertDialog.Builder(this@HomeActivity)
+                        builder.setTitle("Cerrar sesión")
+                        builder.setMessage("¿Está seguro de que quiere cerrar sesión?")
+                        builder.setPositiveButton("Cerrar sesión") { _, _ ->
+                            val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
+                            prefs.clear()
+                            prefs.apply()
 
+                            FirebaseAuth.getInstance().signOut()
+                            val authIntent = Intent(this, AuthActivity::class.java)
+                            startActivity(authIntent)
+                        }
+                        builder.setNegativeButton("Cancelar") { _, _ ->
+                            // El usuario ha cancelado (no hacer nada)
+                        }
+                        builder.create().show()
                         true
                     }
                     else -> false
@@ -116,14 +126,22 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
                         true
                     }
                     R.id.log_out -> {
-                        val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
-                        prefs.clear()
-                        prefs.apply()
+                        val builder = AlertDialog.Builder(this@HomeActivity)
+                        builder.setTitle("Cerrar sesión")
+                        builder.setMessage("¿Está seguro de que quiere cerrar sesión?")
+                        builder.setPositiveButton("Cerrar sesión") { _, _ ->
+                            val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
+                            prefs.clear()
+                            prefs.apply()
 
-                        FirebaseAuth.getInstance().signOut()
-                        val authIntent = Intent(this, AuthActivity::class.java)
-                        startActivity(authIntent)
-
+                            FirebaseAuth.getInstance().signOut()
+                            val authIntent = Intent(this, AuthActivity::class.java)
+                            startActivity(authIntent)
+                        }
+                        builder.setNegativeButton("Cancelar") { _, _ ->
+                            // El usuario ha cancelado (no hacer nada)
+                        }
+                        builder.create().show()
                         true
                     }
                     else -> false
