@@ -51,27 +51,6 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
         // Cargar mapa
         createFragment()
 
-        // Cargar puntos del mapa
-        val databaseReference = FirebaseDatabase.getInstance().getReference("social_points")
-
-        databaseReference.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                dataSnapshot.children.forEach { childSnapshot ->
-                    val socialPoint = childSnapshot.getValue(SocialPoint::class.java)
-                    if (socialPoint != null) {
-                        val position = LatLng(socialPoint.latitude, socialPoint.longitude)
-                        map.addMarker(MarkerOptions().position(position).title(socialPoint.title).snippet(childSnapshot.key))
-                            ?.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.social_point_marker_icon))
-                    }
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                // Controlar error
-            }
-        })
-
-
         // Setup
         val bundle = intent.extras
         val email = bundle?.getString("email")
@@ -173,6 +152,33 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
             marker = map.addMarker(MarkerOptions().position(latLng))
         }
 
+        // Cargar puntos del mapa
+        val databaseReference = FirebaseDatabase.getInstance().getReference("social_points")
+
+        databaseReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                dataSnapshot.children.forEach { childSnapshot ->
+                    val socialPoint = childSnapshot.getValue(SocialPoint::class.java)
+                    if (socialPoint != null) {
+                        val position = LatLng(socialPoint.latitude, socialPoint.longitude)
+                        val marker = map.addMarker(MarkerOptions().position(position).title(socialPoint.title))
+                        marker?.tag = childSnapshot.key
+                        marker?.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.social_point_marker_icon))
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Controlar error
+            }
+        })
+
+        map.setOnMarkerClickListener { clickedMarker ->
+            val SocialPointInfoIntent = Intent(this, SocialPointInfoActivity::class.java)
+            SocialPointInfoIntent.putExtra("socialPointId", clickedMarker.tag.toString())
+            startActivity(SocialPointInfoIntent)
+            true
+        }
     }
 
     private fun setup(email: String, provider: String){

@@ -7,22 +7,22 @@
     android:background="#ded8ca">
 
     <Button
-        android:id="@+id/addPointButton"
+        android:id="@+id/deletePointButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
         android:background="@drawable/button_rounded"
-        android:backgroundTint="#00a773"
-        android:text="Añadir punto"
+        android:backgroundTint="#DD3B3B"
+        android:text="Eliminar punto"
         android:textColor="#050e1f"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/descriptionTextView" />
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/imageView5"
         android:layout_width="299dp"
         android:layout_height="311dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -31,41 +31,28 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logo" />
 
-    <EditText
-        android:id="@+id/titleEditText"
-        android:layout_width="match_parent"
-        android:layout_height="54dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:backgroundTint="#050e1f"
-        android:ems="10"
-        android:hint="Título"
-        android:inputType="textEmailAddress"
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Titulo"
         android:textColor="#050e1f"
-        android:textColorHint="#050e1f"
+        android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView5" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout"
-        android:layout_width="0dp"
-        android:layout_height="87dp"
+    <TextView
+        android:id="@+id/descriptionTextView"
+        android:layout_width="362dp"
+        android:layout_height="106dp"
         android:layout_marginStart="32dp"
+        android:layout_marginTop="15dp"
         android:layout_marginEnd="32dp"
+        android:text="Descripción"
+        android:textColor="#050e1f"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.466"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleEditText">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/descriptionEditText"
-            android:layout_width="match_parent"
-            android:layout_height="59dp"
-            android:backgroundTint="#050e1f"
-            android:hint="Descripción"
-            android:textColor="#050e1f"
-            android:textColorHint="#050e1f" />
-    </com.google.android.material.textfield.TextInputLayout>
-
+        app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
 </androidx.constraintlayout.widget.ConstraintLayout>
