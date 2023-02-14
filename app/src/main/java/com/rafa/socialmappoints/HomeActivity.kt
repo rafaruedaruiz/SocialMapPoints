@@ -74,6 +74,8 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
                 when (item.itemId) {
                     R.id.my_social_points -> {
                         // Ir a la actividad "Mis SocialPoint"
+                        val myPointsIntent = Intent(this, MyPointsActivity::class.java)
+                        startActivity(myPointsIntent)
                         true
                     }
                     R.id.my_social_events -> {
@@ -105,6 +107,8 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
                 when (item.itemId) {
                     R.id.my_social_points -> {
                         // Ir a la actividad "Mis SocialPoint"
+                        val myPointsIntent = Intent(this, MyPointsActivity::class.java)
+                        startActivity(myPointsIntent)
                         true
                     }
                     R.id.my_social_events -> {
