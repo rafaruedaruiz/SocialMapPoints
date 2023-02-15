@@ -1,5 +1,6 @@
 package com.rafa.socialmappoints
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -29,6 +30,7 @@ class MyPointsActivity : AppCompatActivity() {
 
         val socialPointsRef = FirebaseDatabase.getInstance().getReference("social_points")
         val socialPoints = mutableListOf<SocialPoint>()
+        val pointsIds = mutableListOf<String>()
 
         val userId = FirebaseAuth.getInstance().currentUser?.uid
 
@@ -38,11 +40,12 @@ class MyPointsActivity : AppCompatActivity() {
                     val socialPoint = ds.getValue(SocialPoint::class.java)
                     if (socialPoint != null && socialPoint.userID == userId) {   // SOLO COGE LOS DEL USUARIO
                         socialPoints.add(socialPoint)
+                        pointsIds.add(ds.key.toString())
                     }
                 }
                 val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewMyPoints)
                 recyclerView.layoutManager = LinearLayoutManager(this@MyPointsActivity)
-                recyclerView.adapter = PointsAdapter(socialPoints)
+                recyclerView.adapter = PointsAdapter(socialPoints, pointsIds)
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -53,7 +56,7 @@ class MyPointsActivity : AppCompatActivity() {
     }
 
 
-    private inner class PointsAdapter(private val points: List<SocialPoint>) :
+    private inner class PointsAdapter(private val points: List<SocialPoint>, private val ids: List<String>) :
         RecyclerView.Adapter<PointsAdapter.ViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -64,7 +67,8 @@ class MyPointsActivity : AppCompatActivity() {
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val point = points[position]
-            holder.bind(point)
+            val idPoint = ids[position]
+            holder.bind(point, idPoint)
         }
 
         override fun getItemCount(): Int = points.size
@@ -75,10 +79,20 @@ class MyPointsActivity : AppCompatActivity() {
             private val title: TextView = view.findViewById(R.id.tituloTextView)
             private val goButton: ImageButton = view.findViewById(R.id.goButton)
 
-            fun bind(point: SocialPoint) {
+            fun bind(point: SocialPoint, idPoint: String) {                   // FALTA POR CONFIGURAR EL TIPO DE LOGO QUE SALE DEPENDIENDO DE SI ES SOCIALPOINT O EVENT
                 title.text = point.title
 
-                // Configurar otros elementos de la vista, como el logo y el botón
+                title.setOnClickListener {
+                    val intent = Intent(itemView.context, SocialPointInfoActivity::class.java)
+                    intent.putExtra("socialPointId", idPoint)
+                    itemView.context.startActivity(intent)
+                }
+
+                goButton.setOnClickListener {
+                    val intent = Intent(itemView.context, SocialPointInfoActivity::class.java)
+                    intent.putExtra("socialPointId", idPoint)
+                    itemView.context.startActivity(intent)
+                }
             }
         }
     }
