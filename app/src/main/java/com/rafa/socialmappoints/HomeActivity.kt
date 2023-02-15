@@ -10,10 +10,7 @@ import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
 import android.widget.PopupMenu
-import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -50,8 +47,6 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        val userButton = findViewById<TextView>(R.id.emailTextView)
-
         // Cargar mapa
         createFragment()
 
@@ -67,51 +62,9 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
         prefs.putString("provider", provider)
         prefs.apply()
 
-        // Nombre de usuario con desplegable
+        // Imagen usuario abre menu desplegable
         userButton.setOnClickListener {
             val popup = PopupMenu(this, userButton)
-            popup.menuInflater.inflate(R.menu.user_menu, popup.menu)
-            popup.setOnMenuItemClickListener { item ->
-                when (item.itemId) {
-                    R.id.my_social_points -> {
-                        // Ir a la actividad "Mis SocialPoint"
-                        val myPointsIntent = Intent(this, MyPointsActivity::class.java)
-                        startActivity(myPointsIntent)
-                        true
-                    }
-                    R.id.my_social_events -> {
-                        // Ir a la actividad "Mis SocialEvent"
-                        true
-                    }
-                    R.id.log_out -> {
-
-                        val builder = AlertDialog.Builder(this@HomeActivity)
-                        builder.setTitle("Cerrar sesión")
-                        builder.setMessage("¿Está seguro de que quiere cerrar sesión?")
-                        builder.setPositiveButton("Cerrar sesión") { _, _ ->
-                            val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
-                            prefs.clear()
-                            prefs.apply()
-
-                            FirebaseAuth.getInstance().signOut()
-                            val authIntent = Intent(this, AuthActivity::class.java)
-                            startActivity(authIntent)
-                        }
-                        builder.setNegativeButton("Cancelar") { _, _ ->
-                            // El usuario ha cancelado (no hacer nada)
-                        }
-                        builder.create().show()
-                        true
-                    }
-                    else -> false
-                }
-            }
-            popup.show()
-        }
-
-        // Imagen desplegable tambien abre el menu
-        desplegableImageButton.setOnClickListener {
-            val popup = PopupMenu(this, desplegableImageButton)
             popup.menuInflater.inflate(R.menu.user_menu, popup.menu)
             popup.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
@@ -272,7 +225,7 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun setup(email: String, provider: String){
         title = "Inicio"
 
-        emailTextView.text = FirebaseAuth.getInstance().currentUser?.email.toString().split("@")[0]
+        userTextView.text = FirebaseAuth.getInstance().currentUser?.email.toString().split("@")[0]
         //providerTextView.text = provider
 
         addButton.setOnClickListener{

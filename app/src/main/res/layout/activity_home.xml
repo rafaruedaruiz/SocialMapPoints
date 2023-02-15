@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -10,55 +11,51 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <RelativeLayout
-        android:id="@+id/backgr"
-        android:layout_width="match_parent"
-        android:layout_height="96dp"
+    <ImageButton
+        android:id="@+id/addButton"
+        android:layout_width="67dp"
+        android:layout_height="77dp"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:background="@drawable/menu_border_rounded">
+        android:background="#00FFFFFF"
+        android:contentDescription="@string/app_name"
+        android:scaleType="fitCenter"
+        app:srcCompat="@drawable/boton_anadir" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/userLayout"
+        android:layout_width="311dp"
+        android:layout_height="70dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal">
 
         <ImageButton
-            android:id="@+id/addButton"
-            android:layout_width="61dp"
-            android:layout_height="61dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="18dp"
-            android:background="#00FFFFFF"
-            android:contentDescription="@string/app_name"
-            android:scaleType="fitCenter"
-            app:srcCompat="@drawable/boton_anadir" />
-
-        <TextView
-            android:id="@+id/emailTextView"
-            android:layout_width="210dp"
-            android:layout_height="48dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="11dp"
-            android:layout_marginEnd="-279dp"
-            android:layout_marginBottom="17dp"
-            android:layout_toStartOf="@+id/desplegableImageButton"
-            android:layout_toEndOf="@+id/desplegableImageButton"
-            android:clickable="true"
-            android:text="Email"
-            android:textColor="#050e1f"
-            android:textSize="23sp" />
-
-        <ImageButton
-            android:id="@+id/desplegableImageButton"
-            android:layout_width="85dp"
-            android:layout_height="79dp"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
+            android:id="@+id/userButton"
+            android:layout_width="78dp"
+            android:layout_height="74dp"
             android:backgroundTint="#00FFFFFF"
             android:contentDescription="@string/app_name"
             android:scaleType="fitCenter"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/user_button" />
 
-    </RelativeLayout>
+        <TextView
+            android:id="@+id/userTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="User"
+            android:textColor="#050e1f"
+            android:textSize="24sp"
+            app:layout_constraintStart_toEndOf="@+id/userButton"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </RelativeLayout>
