@@ -26,7 +26,10 @@
         <activity android:name=".MyPointsActivity"
             android:exported="true">
         </activity>
-        <activity android:name=".SocialPointInfoActivity"
+        <activity android:name=".EditSocialPointActivity"
+            android:exported="true">
+        </activity>
+        <activity android:name=".InfoSocialPointActivity"
             android:exported="true">
         </activity>
         <activity android:name=".AddPointActivity"

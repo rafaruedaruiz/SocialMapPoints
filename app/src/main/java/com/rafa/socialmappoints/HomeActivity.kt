@@ -215,7 +215,7 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
         })
 
         map.setOnMarkerClickListener { clickedMarker ->
-            val SocialPointInfoIntent = Intent(this, SocialPointInfoActivity::class.java)
+            val SocialPointInfoIntent = Intent(this, InfoSocialPointActivity::class.java)
             SocialPointInfoIntent.putExtra("socialPointId", clickedMarker.tag.toString())
             startActivity(SocialPointInfoIntent)
             true

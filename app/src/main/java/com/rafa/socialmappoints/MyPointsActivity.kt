@@ -2,7 +2,6 @@ package com.rafa.socialmappoints
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,15 +11,11 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import kotlinx.android.synthetic.main.activity_my_points.*
 
 class MyPointsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,13 +78,13 @@ class MyPointsActivity : AppCompatActivity() {
                 title.text = point.title
 
                 title.setOnClickListener {
-                    val intent = Intent(itemView.context, SocialPointInfoActivity::class.java)
+                    val intent = Intent(itemView.context, InfoSocialPointActivity::class.java)
                     intent.putExtra("socialPointId", idPoint)
                     itemView.context.startActivity(intent)
                 }
 
                 goButton.setOnClickListener {
-                    val intent = Intent(itemView.context, SocialPointInfoActivity::class.java)
+                    val intent = Intent(itemView.context, InfoSocialPointActivity::class.java)
                     intent.putExtra("socialPointId", idPoint)
                     itemView.context.startActivity(intent)
                 }

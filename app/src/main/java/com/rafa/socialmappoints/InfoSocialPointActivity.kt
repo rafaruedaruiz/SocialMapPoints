@@ -3,9 +3,7 @@ package com.rafa.socialmappoints
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.view.View
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
@@ -16,11 +14,11 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-class SocialPointInfoActivity : AppCompatActivity(){
+class InfoSocialPointActivity : AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_social_point_info)
+        setContentView(R.layout.activity_info_social_point)
 
         val socialPointId = intent.getStringExtra("socialPointId")
 
@@ -54,7 +52,7 @@ class SocialPointInfoActivity : AppCompatActivity(){
 
         deleteButton.setOnClickListener {
             if (socialPoint != null) {
-                val builder = AlertDialog.Builder(this@SocialPointInfoActivity)
+                val builder = AlertDialog.Builder(this@InfoSocialPointActivity)
                 builder.setTitle("Eliminar punto")
                 builder.setMessage("¿Está seguro de que quiere eliminar este punto social?")
                 builder.setPositiveButton("Eliminar") { _, _ ->
@@ -68,6 +66,12 @@ class SocialPointInfoActivity : AppCompatActivity(){
                 }
                 builder.create().show()
             }
+        }
+
+        editButton.setOnClickListener{
+            val editIntent = Intent(this, EditSocialPointActivity::class.java)
+            editIntent.putExtra("socialPointId", socialPointId)
+            startActivity(editIntent)
         }
 
     }
