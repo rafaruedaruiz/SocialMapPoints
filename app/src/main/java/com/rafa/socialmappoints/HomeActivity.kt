@@ -9,35 +9,26 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.location.LocationManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.MeasureSpec
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.PopupMenu
-import android.widget.TextView
-import android.widget.Toast
-import androidx.cardview.widget.CardView
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MapStyleOptions
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_home.*
+import androidx.appcompat.widget.SearchView
 
 enum class ProviderType{
     BASIC,
@@ -48,6 +39,7 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var map: GoogleMap
     var marker: Marker? = null
+    private var filter: String = ""
 
     companion object {
         const val REQUEST_CODE_LOCATION = 0
@@ -70,6 +62,23 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
         prefs.putString("email", email)
         prefs.putString("provider", provider)
         prefs.apply()
+
+        //Recoger filtro
+        val searchView: SearchView = findViewById(R.id.searchView) as SearchView
+        searchView.clearFocus()
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                // usuario cambia texto y da enter
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                // usuario cambia texto
+                filter = newText
+                loadMarkers()
+                return false
+            }
+        })
 
         // Imagen usuario abre menu desplegable
         userLayout.setOnClickListener {
@@ -202,39 +211,7 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
             marker = map.addMarker(MarkerOptions().position(latLng))
         }
 
-        // MARKERS CON TITULO
-        val markerView = (getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater).inflate(R.layout.marker_layout, null)
-        val text = markerView.findViewById<TextView>(R.id.marker_title)
-        val icon = markerView.findViewById<ImageView>(R.id.marker_icon)
-        val cardView = markerView.findViewById<LinearLayout>(R.id.markerCardView)
-
-
-        // Cargar puntos del mapa
-        val databaseReference = FirebaseDatabase.getInstance().getReference("social_points")
-
-        databaseReference.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                dataSnapshot.children.forEach { childSnapshot ->
-                    val socialPoint = childSnapshot.getValue(SocialPoint::class.java)
-                    if (socialPoint != null) {
-                        text.text = socialPoint.title
-                        // icon = (tipo de icono a mostrar) si quiero cambiar colores entre SocialPoint - Event
-                        val bitmap1 = Bitmap.createScaledBitmap(viewToBitmap(cardView)!!, cardView.width, cardView.height, false)
-                        val smallMarkerIcon1 = BitmapDescriptorFactory.fromBitmap(bitmap1)
-
-
-                        val position = LatLng(socialPoint.latitude, socialPoint.longitude)
-                        val marker = map.addMarker(MarkerOptions().position(position).title(socialPoint.title))
-                        marker?.tag = childSnapshot.key
-                        marker?.setIcon(smallMarkerIcon1) // en el caso de querer volver a los markers sin título solo hay que sustituir aqui por marker?.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.social_point_marker_icon))
-                    }
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                // Controlar error
-            }
-        })
+        loadMarkers()
 
         map.setOnMarkerClickListener { clickedMarker ->
             val SocialPointInfoIntent = Intent(this, InfoSocialPointActivity::class.java)
@@ -251,6 +228,60 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
         view.layout(0, 0, view.measuredWidth, view.measuredHeight)
         view.draw(canvas)
         return bitmap
+    }
+
+    private fun loadMarkers(){
+        map.clear()
+
+        // MARKERS CON TITULO
+        val markerView = (getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater).inflate(R.layout.marker_layout, null)
+        val text = markerView.findViewById<TextView>(R.id.marker_title)
+        val icon = markerView.findViewById<ImageView>(R.id.marker_icon)
+        val cardView = markerView.findViewById<LinearLayout>(R.id.markerCardView)
+
+
+        // Cargar puntos del mapa
+        val databaseReference = FirebaseDatabase.getInstance().getReference("social_points")
+
+        databaseReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                dataSnapshot.children.forEach { childSnapshot ->
+                    val socialPoint = childSnapshot.getValue(SocialPoint::class.java)
+                    if (socialPoint != null) {
+                        if(filter.length == 0){  // si no tiene filtro carga todo
+                            text.text = socialPoint.title
+                            // icon = (tipo de icono a mostrar) si quiero cambiar colores entre SocialPoint - Event
+                            val bitmap1 = Bitmap.createScaledBitmap(viewToBitmap(cardView)!!, cardView.width, cardView.height, false)
+                            val smallMarkerIcon1 = BitmapDescriptorFactory.fromBitmap(bitmap1)
+
+
+                            val position = LatLng(socialPoint.latitude, socialPoint.longitude)
+                            val marker = map.addMarker(MarkerOptions().position(position).title(socialPoint.title))
+                            marker?.tag = childSnapshot.key
+                            marker?.setIcon(smallMarkerIcon1)
+                        }else{  // si hay algo en el searchView, se filtra
+                            if (socialPoint.title.contains(filter, ignoreCase = true) || socialPoint.description.contains(filter, ignoreCase = true)){ // filtro
+                            text.text = socialPoint.title
+                                // icon = (tipo de icono a mostrar) si quiero cambiar colores entre SocialPoint - Event
+                                val bitmap1 = Bitmap.createScaledBitmap(viewToBitmap(cardView)!!, cardView.width, cardView.height, false)
+                                val smallMarkerIcon1 = BitmapDescriptorFactory.fromBitmap(bitmap1)
+
+
+                                val position = LatLng(socialPoint.latitude, socialPoint.longitude)
+                                val marker = map.addMarker(MarkerOptions().position(position).title(socialPoint.title))
+                                marker?.tag = childSnapshot.key
+                                marker?.setIcon(smallMarkerIcon1)
+                            }
+                        }
+
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Controlar error
+            }
+        })
     }
 
     private fun setup(email: String, provider: String){
