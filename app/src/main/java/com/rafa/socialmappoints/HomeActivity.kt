@@ -6,12 +6,21 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.View.MeasureSpec
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.PopupMenu
+import android.widget.TextView
 import android.widget.Toast
+import androidx.cardview.widget.CardView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -193,6 +202,13 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
             marker = map.addMarker(MarkerOptions().position(latLng))
         }
 
+        // MARKERS CON TITULO
+        val markerView = (getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater).inflate(R.layout.marker_layout, null)
+        val text = markerView.findViewById<TextView>(R.id.marker_title)
+        val icon = markerView.findViewById<ImageView>(R.id.marker_icon)
+        val cardView = markerView.findViewById<LinearLayout>(R.id.markerCardView)
+
+
         // Cargar puntos del mapa
         val databaseReference = FirebaseDatabase.getInstance().getReference("social_points")
 
@@ -201,10 +217,16 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
                 dataSnapshot.children.forEach { childSnapshot ->
                     val socialPoint = childSnapshot.getValue(SocialPoint::class.java)
                     if (socialPoint != null) {
+                        text.text = socialPoint.title
+                        // icon = (tipo de icono a mostrar) si quiero cambiar colores entre SocialPoint - Event
+                        val bitmap1 = Bitmap.createScaledBitmap(viewToBitmap(cardView)!!, cardView.width, cardView.height, false)
+                        val smallMarkerIcon1 = BitmapDescriptorFactory.fromBitmap(bitmap1)
+
+
                         val position = LatLng(socialPoint.latitude, socialPoint.longitude)
                         val marker = map.addMarker(MarkerOptions().position(position).title(socialPoint.title))
                         marker?.tag = childSnapshot.key
-                        marker?.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.social_point_marker_icon))
+                        marker?.setIcon(smallMarkerIcon1) // en el caso de querer volver a los markers sin título solo hay que sustituir aqui por marker?.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.social_point_marker_icon))
                     }
                 }
             }
@@ -220,6 +242,15 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
             startActivity(SocialPointInfoIntent)
             true
         }
+    }
+
+    private fun viewToBitmap(view: View): Bitmap?{
+        view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+        val bitmap = Bitmap.createBitmap(view.measuredWidth, view.measuredHeight, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        view.layout(0, 0, view.measuredWidth, view.measuredHeight)
+        view.draw(canvas)
+        return bitmap
     }
 
     private fun setup(email: String, provider: String){
