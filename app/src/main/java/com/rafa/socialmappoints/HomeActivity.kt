@@ -207,16 +207,30 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // Punto temporal para ser añadido
         map.setOnMapClickListener { latLng ->
+            val markerView = (getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater).inflate(R.layout.marker_layout, null)
+            val text = markerView.findViewById<TextView>(R.id.marker_title)
+            val icon = markerView.findViewById<ImageView>(R.id.marker_icon)
+            val cardView = markerView.findViewById<LinearLayout>(R.id.markerCardView)
+
+            text.visibility = View.INVISIBLE
+            icon.setImageResource(R.drawable.set_marker_icon)
+            val bitmap1 = Bitmap.createScaledBitmap(viewToBitmap(cardView)!!, cardView.width, cardView.height, false)
+            val smallMarkerIcon1 = BitmapDescriptorFactory.fromBitmap(bitmap1)
+
             marker?.remove()
             marker = map.addMarker(MarkerOptions().position(latLng))
+            marker?.setIcon(smallMarkerIcon1)
+            marker?.tag = "marker_set"
         }
 
         loadMarkers()
 
         map.setOnMarkerClickListener { clickedMarker ->
-            val SocialPointInfoIntent = Intent(this, InfoSocialPointActivity::class.java)
-            SocialPointInfoIntent.putExtra("socialPointId", clickedMarker.tag.toString())
-            startActivity(SocialPointInfoIntent)
+            if(clickedMarker.tag.toString() != "marker_set"){  // soluciona error de clickar sobre el marker_set
+                val SocialPointInfoIntent = Intent(this, InfoSocialPointActivity::class.java)
+                SocialPointInfoIntent.putExtra("socialPointId", clickedMarker.tag.toString())
+                startActivity(SocialPointInfoIntent)
+            }
             true
         }
     }
