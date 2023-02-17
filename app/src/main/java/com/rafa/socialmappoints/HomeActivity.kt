@@ -72,8 +72,8 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
         prefs.apply()
 
         // Imagen usuario abre menu desplegable
-        userButton.setOnClickListener {
-            val popup = PopupMenu(this, userButton)
+        userLayout.setOnClickListener {
+            val popup = PopupMenu(this, userLayout)
             popup.menuInflater.inflate(R.menu.user_menu, popup.menu)
             popup.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
