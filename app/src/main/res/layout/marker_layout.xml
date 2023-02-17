@@ -21,6 +21,7 @@
         android:id="@+id/marker_icon"
         android:layout_width="32dp"
         android:layout_height="32dp"
+        android:layout_gravity="center"
         android:src="@drawable/social_point_marker_icon" />
 
 </LinearLayout>
