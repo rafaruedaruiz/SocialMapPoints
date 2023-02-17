@@ -4,7 +4,10 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="8dp">
+    android:layout_marginLeft="0dp"
+    android:layout_marginTop="0dp"
+    android:layout_marginRight="0dp"
+    android:layout_marginBottom="0dp">
 
     <TextView
         android:id="@+id/marker_title"
@@ -12,7 +15,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/menu_border_rounded"
         android:paddingTop="4dp"
-        android:text="Título de mi marcador"
+        android:text="Esto es un titulo de ejemplo"
         android:textColor="#000000"
         android:textSize="12sp"
         android:textStyle="bold" />
