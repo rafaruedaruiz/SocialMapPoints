@@ -212,7 +212,7 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
             val icon = markerView.findViewById<ImageView>(R.id.marker_icon)
             val cardView = markerView.findViewById<LinearLayout>(R.id.markerCardView)
 
-            text.visibility = View.INVISIBLE
+            text.visibility = View.GONE
             icon.setImageResource(R.drawable.set_marker_icon)
             val bitmap1 = Bitmap.createScaledBitmap(viewToBitmap(cardView)!!, cardView.width, cardView.height, false)
             val smallMarkerIcon1 = BitmapDescriptorFactory.fromBitmap(bitmap1)
