@@ -24,6 +24,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import kotlinx.android.synthetic.main.activity_info_social_point.*
+import me.relex.circleindicator.CircleIndicator3
 import java.io.File
 
 class InfoSocialPointActivity : AppCompatActivity() {
@@ -37,6 +38,8 @@ class InfoSocialPointActivity : AppCompatActivity() {
         val socialPointId = intent.getStringExtra("socialPointId")
 
         val viewPager2 = findViewById<ViewPager2>(R.id.viewPager2)
+        val indicator = findViewById<CircleIndicator3>(R.id.indicator)
+        indicator.setViewPager(viewPager2)
 
         val titleTextView = findViewById<TextView>(R.id.titleTextView)
         val descriptionTextView = findViewById<TextView>(R.id.descriptionTextView)
@@ -80,6 +83,7 @@ class InfoSocialPointActivity : AppCompatActivity() {
                     if (imageList.size == listResult.items.size) {
                         // Se han descargado todas las imágenes, se actualiza el ViewPager2
                         viewPager2.adapter = ImagePagerAdapter(imageList)
+                        indicator.setViewPager(viewPager2)
                     }
                 }
             }
@@ -87,7 +91,6 @@ class InfoSocialPointActivity : AppCompatActivity() {
             // Si no tiene imágenes asociadas no se muestra ninguna y hay que quitar el viewPager
             viewPager2.setVisibility(View.GONE)
         }
-
 
         deleteButton.setOnClickListener {
             if (socialPoint != null) {
