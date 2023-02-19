@@ -1,17 +1,24 @@
 package com.rafa.socialmappoints
 
 import android.content.Intent
+import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.Button
-import android.widget.Toast
+import android.view.ViewGroup
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.*
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.activity_add_point.*
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_edit_social_point.*
+
 
 class EditSocialPointActivity : AppCompatActivity() {
 
@@ -42,6 +49,30 @@ class EditSocialPointActivity : AppCompatActivity() {
             }
         })
 
+
+
+        // Obtengo las imagenes y se las paso al adapter
+        val images = mutableListOf<Drawable>()
+        val storage = FirebaseStorage.getInstance()
+        val storageRef = storage.reference.child("images/$socialPointId")
+
+        storageRef.listAll().addOnSuccessListener { listResult ->
+            for (item in listResult.items) {
+                val maxDownloadSizeBytes = 1024 * 1024L // 1MB
+                val bytesTask = item.getBytes(maxDownloadSizeBytes)
+                bytesTask.addOnSuccessListener { bytes ->
+                    val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                    val drawable = BitmapDrawable(resources, bitmap)
+                    images.add(drawable)
+
+                    // adapter
+                    val recyclerView = findViewById<RecyclerView>(R.id.imageList)
+                    recyclerView.layoutManager = LinearLayoutManager(this@EditSocialPointActivity)
+                    recyclerView.adapter = ImageListAdapter(images)
+                }
+            }
+        }
+
         saveButton.setOnClickListener {
             saveSocialPoint(socialPoint)
             Toast.makeText(this@EditSocialPointActivity, "Punto Social editado con éxito", Toast.LENGTH_SHORT).show()
@@ -62,3 +93,25 @@ class EditSocialPointActivity : AppCompatActivity() {
         }
     }
 }
+
+private class ImageListAdapter(private val images: MutableList<Drawable>) : RecyclerView.Adapter<ImageListAdapter.ViewHolder>() {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.view_image_on_list, parent, false)
+        return ViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val image = images[position]
+        holder.bind(image)
+    }
+   inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val imageView: ImageView = view.findViewById(R.id.imageViewToDelete)
+        val deleteButton: ImageButton = view.findViewById(R.id.redCrossImageButton)
+       fun bind(image: Drawable) {
+           imageView.setImageDrawable(image)
+       }
+    }
+    override fun getItemCount() : Int = images.size
+}
+
