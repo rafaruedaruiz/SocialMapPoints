@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -98,17 +99,20 @@ class InfoSocialPointActivity : AppCompatActivity() {
                 builder.setTitle("Eliminar punto")
                 builder.setMessage("¿Está seguro de que quiere eliminar este punto social?")
                 builder.setPositiveButton("Eliminar") { _, _ ->
+                    // Elimina el SocialPoint de Realtime Database
                     socialPointRef.removeValue()
                     Toast.makeText(this, "Punto Social eliminado con éxito", Toast.LENGTH_SHORT).show()
                     val homeIntent = Intent(this, HomeActivity::class.java)
                     startActivity(homeIntent)
                 }
+
                 builder.setNegativeButton("Cancelar") { _, _ ->
                     // El usuario ha cancelado (no hacer nada)
                 }
                 builder.create().show()
             }
         }
+
 
         editButton.setOnClickListener{
             val editIntent = Intent(this, EditSocialPointActivity::class.java)
