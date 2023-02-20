@@ -29,6 +29,8 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_home.*
 import androidx.appcompat.widget.SearchView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
 
 enum class ProviderType{
     BASIC,
@@ -47,6 +49,7 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+
 
         // Cargar mapa
         createFragment()
@@ -301,8 +304,15 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun setup(email: String, provider: String){
         title = "Inicio"
 
-        userTextView.text = FirebaseAuth.getInstance().currentUser?.email.toString().split("@")[0]
+        val user = FirebaseAuth.getInstance().currentUser
+        userTextView.text = user?.email.toString().split("@")[0]
+        if(provider == "GOOGLE"){
+            Glide.with(this).load(user?.photoUrl).transform(CircleCrop()).into(userPhoto)
+        }else{
+            Glide.with(this).load(R.drawable.default_user_photo).transform(CircleCrop()).into(userPhoto)
+        }
         //providerTextView.text = provider
+
 
         addButton.setOnClickListener{
             if (marker != null) {
