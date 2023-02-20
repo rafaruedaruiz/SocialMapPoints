@@ -118,6 +118,7 @@ class InfoSocialPointActivity : AppCompatActivity() {
             val editIntent = Intent(this, EditSocialPointActivity::class.java)
             editIntent.putExtra("socialPointId", socialPointId)
             startActivity(editIntent)
+            finish()
         }
 
         comoLlegarButton.setOnClickListener {

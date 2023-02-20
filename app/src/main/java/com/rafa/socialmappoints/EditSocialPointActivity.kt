@@ -1,9 +1,11 @@
 package com.rafa.socialmappoints
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -22,20 +24,26 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import kotlinx.android.synthetic.main.activity_edit_social_point.*
+import java.util.*
 
 
 class EditSocialPointActivity : AppCompatActivity() {
 
     private lateinit var saveButton: Button
+    private lateinit var uploadImageButton: Button
     private lateinit var socialPointId: String
     private lateinit var socialPoint: SocialPoint
+    private lateinit var recyclerView: RecyclerView
+    private val images = mutableListOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_social_point)
+        saveButton = findViewById(R.id.saveButton)
+        uploadImageButton = findViewById(R.id.uploadImageButton)
+        recyclerView = findViewById<RecyclerView>(R.id.imageList)
 
         socialPointId = intent.getStringExtra("socialPointId").toString()
-        saveButton = findViewById(R.id.saveButton)
 
         val database = FirebaseDatabase.getInstance().reference
         val socialPointRef = socialPointId.let { database.child("social_points").child(it) }!!
@@ -56,7 +64,6 @@ class EditSocialPointActivity : AppCompatActivity() {
 
 
         // Obtengo las imagenes y se las paso al adapter
-        val images = mutableListOf<String>()
         val storage = FirebaseStorage.getInstance()
         val storageRef = storage.reference.child("images/$socialPointId")
 
@@ -66,7 +73,6 @@ class EditSocialPointActivity : AppCompatActivity() {
                 images.add(imageName)
             }
             // adapter
-            val recyclerView = findViewById<RecyclerView>(R.id.imageList)
             recyclerView.layoutManager = LinearLayoutManager(this@EditSocialPointActivity)
             recyclerView.adapter = ImageListAdapter(images, socialPointId)
         }
@@ -74,7 +80,57 @@ class EditSocialPointActivity : AppCompatActivity() {
         saveButton.setOnClickListener {
             saveSocialPoint(socialPoint)
             Toast.makeText(this@EditSocialPointActivity, "Punto Social editado con éxito", Toast.LENGTH_SHORT).show()
+
+            // Volvemos a la vista anterior pero con los datos actualizados
+            val socialPointInfoIntent = Intent(this, InfoSocialPointActivity::class.java)
+            socialPointInfoIntent.putExtra("socialPointId", socialPointId)
+            startActivity(socialPointInfoIntent)
             finish()
+        }
+
+        uploadImageButton.setOnClickListener {
+            selectImages()
+        }
+
+    }
+
+    private val PICK_IMAGES = 1
+
+    private fun selectImages() {
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.type = "image/*"
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+        startActivityForResult(Intent.createChooser(intent, "Selecciona imágenes"), PICK_IMAGES)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == PICK_IMAGES && resultCode == Activity.RESULT_OK && data != null) {
+            val clipData = data.clipData
+            if (clipData != null) {
+                for (i in 0 until clipData.itemCount) {
+                    val imageUri = clipData.getItemAt(i).uri
+                    uploadImage(imageUri)
+                }
+            } else {
+                val imageUri = data.data
+                if (imageUri != null) {
+                    uploadImage(imageUri)
+                }
+            }
+        }
+    }
+
+    private fun uploadImage(imageUri: Uri) {
+        val imageName = UUID.randomUUID().toString()
+        val storageRef = FirebaseStorage.getInstance().reference.child("images/$socialPointId/$imageName")
+        storageRef.putFile(imageUri).addOnSuccessListener { taskSnapshot ->
+            taskSnapshot.metadata?.reference?.downloadUrl?.addOnSuccessListener { uri ->
+                images.add(imageName)
+                recyclerView.adapter?.notifyItemInserted(images.size - 1)
+            }
+        }.addOnFailureListener { exception ->
+            // Manejar la excepción
         }
     }
 
@@ -119,7 +175,6 @@ private class ImageListAdapter(private val images: MutableList<String>, private 
 
            deleteButton.setOnClickListener {
                val storage = FirebaseStorage.getInstance()
-               Log.d("EditSocialPointActivity", "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXimages/$socialPointId/image_${adapterPosition + 1}")
                val storageRef = storage.reference.child("images/$socialPointId/$imageName")
                storageRef.delete().addOnSuccessListener {
                    images.removeAt(adapterPosition)
