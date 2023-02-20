@@ -192,14 +192,24 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
         // Habilitar ubicación del usuario
         enableMyLocation()
 
-        // Zoom en la ubicación del usuario
-        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        val location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-        val latLng = location?.let { LatLng(it.latitude, location.longitude) }
-        val cameraUpdate = latLng?.let { CameraUpdateFactory.newLatLngZoom(it, 15f) }
-        if (cameraUpdate != null) {
+        // Zoom de la cámara del mapa
+        val lat = intent.getDoubleExtra("lat", 0.0)     // Intento recoger los extras del intent
+        val lng = intent.getDoubleExtra("lng", 0.0)
+
+        if (lat != 0.0 && lng != 0.0) {   // En el caso de que se haya pasado extras por el intent, se hace zoom en esa location
+            val location = LatLng(lat, lng)
+            val cameraUpdate = CameraUpdateFactory.newLatLngZoom(location, 14f)
             map.animateCamera(cameraUpdate)
+        } else {   // En otro caso, se hace zoom en la ubicación del usuario
+            val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            val location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+            val latLng = location?.let { LatLng(it.latitude, location.longitude) }
+            val cameraUpdate = latLng?.let { CameraUpdateFactory.newLatLngZoom(it, 14f) }
+            if (cameraUpdate != null) {
+                map.animateCamera(cameraUpdate)
+            }
         }
+
 
 
         // Map style sin los puntos de interes que trae google maps por defecto

@@ -126,6 +126,14 @@ class InfoSocialPointActivity : AppCompatActivity() {
             val intent = Intent(Intent.ACTION_VIEW, uri)
             startActivity(intent)
         }
+
+        verEnElMapaButton.setOnClickListener {
+            val homeIntent = Intent(this, HomeActivity::class.java)
+            homeIntent.putExtra("lat", socialPoint.latitude)
+            homeIntent.putExtra("lng", socialPoint.longitude)
+            startActivity(homeIntent)
+            finish()
+        }
     }
 }
 

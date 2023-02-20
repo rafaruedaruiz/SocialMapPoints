@@ -62,7 +62,10 @@ class AddPointActivity : AppCompatActivity() {
                 saveSocialPoint(socialPoint)
                 Toast.makeText(this, "Punto Social añadido con éxito", Toast.LENGTH_SHORT).show()
                 val homeIntent = Intent(this, HomeActivity::class.java)
+                homeIntent.putExtra("lat", latitude)
+                homeIntent.putExtra("lng", longitude)
                 startActivity(homeIntent)
+                finish()
             }else{
                 Toast.makeText(this, "Por favor, rellene los campos necesarios", Toast.LENGTH_SHORT).show()
             }
