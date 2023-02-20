@@ -65,7 +65,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:backgroundTint="#00a773"
-        android:text="Añadir imagen"
+        android:text="Añadir imágenes"
         android:textColor="#050e1f"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

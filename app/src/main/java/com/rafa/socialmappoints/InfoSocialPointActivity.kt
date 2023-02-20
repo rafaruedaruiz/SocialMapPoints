@@ -75,22 +75,27 @@ class InfoSocialPointActivity : AppCompatActivity() {
         val imagesRef = storageRef.child("images/$socialPointId")
 
         imagesRef.listAll().addOnSuccessListener { listResult ->
-            val imageList = mutableListOf<Bitmap>()
-            for (item in listResult.items) {
-                val localFile = File.createTempFile("images", "jpg")
-                item.getFile(localFile).addOnSuccessListener {
-                    val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, Uri.fromFile(localFile))
-                    imageList.add(bitmap)
-                    if (imageList.size == listResult.items.size) {
-                        // Se han descargado todas las imágenes, se actualiza el ViewPager2
-                        viewPager2.adapter = ImagePagerAdapter(imageList)
-                        indicator.setViewPager(viewPager2)
+            if (listResult.items.isNotEmpty()) {
+                val imageList = mutableListOf<Bitmap>()
+                for (item in listResult.items) {
+                    val localFile = File.createTempFile("images", "jpg")
+                    item.getFile(localFile).addOnSuccessListener {
+                        val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, Uri.fromFile(localFile))
+                        imageList.add(bitmap)
+                        if (imageList.size == listResult.items.size) {
+                            // Se han descargado todas las imágenes, se actualiza el ViewPager2
+                            viewPager2.adapter = ImagePagerAdapter(imageList)
+                            indicator.setViewPager(viewPager2)
+                        }
                     }
                 }
+            } else {
+                cardView.visibility = View.GONE
+                viewPager2.visibility = View.GONE
+                indicator.visibility = View.GONE
             }
         }.addOnFailureListener { exception ->
-            // Si no tiene imágenes asociadas no se muestra ninguna y hay que quitar el viewPager
-            viewPager2.setVisibility(View.GONE)
+
         }
 
         deleteButton.setOnClickListener {
