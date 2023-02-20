@@ -3,9 +3,17 @@ package com.rafa.socialmappoints
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
@@ -23,6 +31,7 @@ class AddPointActivity : AppCompatActivity() {
     private lateinit var addPointButton: Button
     private lateinit var imageButton: Button
     private lateinit var imageUriList: MutableList<Uri>
+    private lateinit var recyclerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +40,7 @@ class AddPointActivity : AppCompatActivity() {
         addPointButton = findViewById(R.id.addPointButton)
         imageButton = findViewById(R.id.addImageButton)
         imageUriList = mutableListOf()
+        recyclerView = findViewById(R.id.imageList2)
 
         imageButton.setOnClickListener {
             // abre galeria
@@ -88,6 +98,9 @@ class AddPointActivity : AppCompatActivity() {
                 for (i in 0 until clipData.itemCount) {
                     imageUriList.add(clipData.getItemAt(i).uri)
                 }
+                // adapter
+                recyclerView.layoutManager = LinearLayoutManager(this@AddPointActivity)
+                recyclerView.adapter = ImageList2Adapter(imageUriList)
             } else if (data?.data != null) {
                 imageUriList.add(data.data!!)
             }
@@ -96,5 +109,33 @@ class AddPointActivity : AppCompatActivity() {
 
     companion object {
         private const val REQUEST_CODE_SELECT_IMAGES = 1
+    }
+}
+
+private class ImageList2Adapter(private val images: MutableList<Uri>) : RecyclerView.Adapter<ImageList2Adapter.ViewHolder>() {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.view_image_on_list, parent, false)
+        return ViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val image = images[position]
+        holder.bind(image)
+    }
+
+    override fun getItemCount() : Int = images.size
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val imageView: ImageView = view.findViewById(R.id.imageViewToDelete)
+        val deleteButton: ImageButton = view.findViewById(R.id.redCrossImageButton)
+        fun bind(image: Uri) {
+            Glide.with(itemView.context).load(image).into(imageView)
+
+            deleteButton.setOnClickListener {
+                    images.removeAt(adapterPosition)
+                    notifyItemRemoved(adapterPosition)
+                    notifyItemRangeChanged(adapterPosition, images.size)
+            }
+        }
     }
 }
