@@ -256,6 +256,16 @@ private class CommentAdapter(private val comments: MutableList<Comment>) : Recyc
             authorUsername.text = comment.username
             message.text = comment.message
             date.text = comment.dateAndTime
+
+            val user = FirebaseAuth.getInstance().currentUser
+            val storageRef = Firebase.storage.reference
+            val photoRef = storageRef.child("profile_photos/${user?.uid}/default_user_photo.jpg")
+            photoRef.downloadUrl.addOnSuccessListener { uri ->
+                // Cargar la imagen con Glide
+                Glide.with(itemView.context).load(uri).transform(CircleCrop()).into(authorPhoto)
+            }.addOnFailureListener { exception ->
+                // Manejar el error
+            }
         }
     }
 }
