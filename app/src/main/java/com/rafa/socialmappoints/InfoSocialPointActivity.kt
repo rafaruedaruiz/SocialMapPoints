@@ -1,9 +1,12 @@
 package com.rafa.socialmappoints
 
 import android.app.AlertDialog
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -12,29 +15,45 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.Transition
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.request.target.CustomTarget
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
+import com.google.firebase.firestore.auth.User
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
+import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_info_social_point.*
 import me.relex.circleindicator.CircleIndicator3
+import java.io.ByteArrayOutputStream
 import java.io.File
+import java.time.Instant
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 class InfoSocialPointActivity : AppCompatActivity() {
 
     private lateinit var socialPoint: SocialPoint
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_info_social_point)
@@ -49,6 +68,10 @@ class InfoSocialPointActivity : AppCompatActivity() {
         val descriptionTextView = findViewById<TextView>(R.id.descriptionTextView)
         val deleteButton = findViewById<ImageButton>(R.id.deleteButton)
         val editButton = findViewById<ImageButton>(R.id.editButton)
+
+        val commentList = mutableListOf<Comment>()
+        val commentAdapter = CommentAdapter(commentList)
+        val commentRecyclerView = findViewById<RecyclerView>(R.id.commentsRecyclerView)
 
         val database = FirebaseDatabase.getInstance().reference
         val socialPointRef = socialPointId?.let { database.child("social_points").child(socialPointId) }!!
@@ -65,6 +88,10 @@ class InfoSocialPointActivity : AppCompatActivity() {
                         deleteButton.visibility = View.GONE
                         editButton.visibility = View.GONE
                     }
+                    // Actualiza la caja de comentarios
+                    commentList.clear()
+                    commentList.addAll(socialPoint.comments.reversed())
+                    commentAdapter.notifyDataSetChanged()
                 }
             }
 
@@ -72,6 +99,9 @@ class InfoSocialPointActivity : AppCompatActivity() {
                 // gestionar errores
             }
         })
+
+        commentRecyclerView.layoutManager = LinearLayoutManager(this)
+        commentRecyclerView.adapter = commentAdapter
 
         // Recoger imagenes de firebase storage
         val storageRef = Firebase.storage.reference
@@ -108,10 +138,16 @@ class InfoSocialPointActivity : AppCompatActivity() {
             if (keyCode == KeyEvent.KEYCODE_ENTER && keyEvent.action == KeyEvent.ACTION_UP) {
                 val commentText = commentEditText.text.toString().trim()
                 if (commentText.isNotEmpty()) {
-                    val userId = FirebaseAuth.getInstance().currentUser?.uid
-                    val timestamp = System.currentTimeMillis()
+                    val user = FirebaseAuth.getInstance().currentUser
+                    val userId = user?.uid
 
-                    val comment = userId?.let { Comment(it, commentText, timestamp) }
+                    val timestamp = System.currentTimeMillis()
+                    val dateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.systemDefault())
+                    val formatter = DateTimeFormatter.ofPattern("dd/MM HH:mm")
+                    val formattedDateTime = dateTime.format(formatter)
+
+                    val username = user?.email.toString().split("@")[0]
+                    val comment = userId?.let { Comment(it, username, commentText, formattedDateTime) }
 
                     // Actualiza la lista de comentarios del SocialPoint en la base de datos
                     val socialPointRef = FirebaseDatabase.getInstance().getReference().child("social_points").child(socialPointId)
@@ -200,4 +236,26 @@ class ImagePagerAdapter(private val images: List<Bitmap>) : RecyclerView.Adapter
     }
 }
 
+private class CommentAdapter(private val comments: MutableList<Comment>) : RecyclerView.Adapter<CommentAdapter.ViewHolder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.view_comment_on_list, parent, false)
+        return ViewHolder(view)
+    }
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val comment = comments[position]
+        holder.bind(comment)
+    }
 
+    override fun getItemCount() : Int = comments.size
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val authorPhoto: CircleImageView = view.findViewById(R.id.commentAuthorPhoto)
+        val authorUsername: TextView = view.findViewById(R.id.commentAuthor)
+        val message : TextView = view.findViewById(R.id.commentMessage)
+        val date : TextView = view.findViewById(R.id.commentTimestamp)
+        fun bind(comment: Comment) {
+            authorUsername.text = comment.username
+            message.text = comment.message
+            date.text = comment.dateAndTime
+        }
+    }
+}
