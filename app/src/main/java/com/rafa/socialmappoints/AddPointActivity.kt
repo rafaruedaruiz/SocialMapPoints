@@ -56,7 +56,10 @@ class AddPointActivity : AppCompatActivity() {
             val description = descriptionEditText.text.toString()
             val latitude = intent.getDoubleExtra("latitude", 0.0)
             val longitude = intent.getDoubleExtra("longitude", 0.0)
-            val socialPoint = SocialPoint(userID, title, description, latitude, longitude)
+            val comments = mutableListOf<Comment>()
+
+            val socialPoint = SocialPoint(userID, title, description, latitude, longitude, comments)
+
 
             if(title.isNotEmpty()){
                 saveSocialPoint(socialPoint)

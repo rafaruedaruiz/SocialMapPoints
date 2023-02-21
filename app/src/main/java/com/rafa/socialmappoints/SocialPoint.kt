@@ -5,10 +5,12 @@ data class SocialPoint(
     var title: String,
     var description: String,
     var latitude: Double,
-    var longitude: Double
+    var longitude: Double,
+    var comments: MutableList<Comment>
 ) {
-    constructor() : this("", "", "", 0.0, 0.0)
+    constructor() : this("", "", "", 0.0, 0.0, mutableListOf<Comment>())
 }
+
 
 
 
