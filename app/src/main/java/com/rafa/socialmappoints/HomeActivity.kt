@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.location.LocationManager
 import android.os.Bundle
@@ -31,6 +32,10 @@ import kotlinx.android.synthetic.main.activity_home.*
 import androidx.appcompat.widget.SearchView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
+import java.io.ByteArrayOutputStream
 
 enum class ProviderType{
     BASIC,
@@ -315,14 +320,48 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
         title = "Inicio"
 
         val user = FirebaseAuth.getInstance().currentUser
-        userTextView.text = user?.email.toString().split("@")[0]
-        if(provider == "GOOGLE"){
-            Glide.with(this).load(user?.photoUrl).transform(CircleCrop()).into(userPhoto)
-        }else{
-            Glide.with(this).load(R.drawable.default_user_photo).transform(CircleCrop()).into(userPhoto)
-        }
-        //providerTextView.text = provider
+        if(user != null){
+            val userRef = FirebaseDatabase.getInstance().getReference("users").child(user.uid)
+            userRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (!dataSnapshot.exists()) {
+                        // El usuario no existe en la base de datos, lo creamos
+                        val username = user.email.toString().split("@")[0]
+                        val storage = Firebase.storage
+                        val storageRef = storage.reference
+                        val path = "profile_photos/${user.uid}/default_user_photo.jpg"
+                        val photoRef = storageRef.child(path)
+                        val defaultUserPhotoBitmap = BitmapFactory.decodeResource(resources, R.drawable.default_user_photo)
+                        val byteArrayOutputStream = ByteArrayOutputStream()
+                        defaultUserPhotoBitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+                        val data = byteArrayOutputStream.toByteArray()
+                        val uploadTask = photoRef.putBytes(data)
+                        uploadTask.addOnSuccessListener {
+                            // La imagen se cargó correctamente
+                        }.addOnFailureListener { exception ->
+                            // Hubo un error al cargar la imagen
+                        }
+                        val newUser = User(username)
+                        userRef.setValue(newUser)
+                    }
+                    // Luego cargamos los datos del usuario para el Home
+                    userTextView.text = dataSnapshot.child("username").value as String
+                    val storageRef = Firebase.storage.reference
+                    val photoRef = storageRef.child("profile_photos/${user.uid}/default_user_photo.jpg")
+                    photoRef.downloadUrl.addOnSuccessListener { uri ->
+                        // Cargar la imagen con Glide
+                        Glide.with(this@HomeActivity).load(uri).transform(CircleCrop()).into(userPhoto)
+                    }.addOnFailureListener { exception ->
+                        // Manejar el error
+                    }
 
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    // Manejar el error
+                }
+            })
+        }
 
         addButton.setOnClickListener{
             if (marker != null) {
