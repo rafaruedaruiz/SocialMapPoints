@@ -296,8 +296,13 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
                             marker?.tag = childSnapshot.key
                             marker?.setIcon(smallMarkerIcon1)
                         }else{  // si hay algo en el searchView, se filtra
-                            if (socialPoint.title.contains(filter, ignoreCase = true) || socialPoint.description.contains(filter, ignoreCase = true)){ // filtro
-                            text.text = socialPoint.title
+                            // Se divide el filtro en palabras
+                            val filterWords = filter.split("\\s+".toRegex())
+                            val found = filterWords.any { word ->
+                                socialPoint.title.contains(word, ignoreCase = true) || socialPoint.description.contains(word, ignoreCase = true)
+                            }
+                            if (found) {
+                                text.text = socialPoint.title
                                 // icon = (tipo de icono a mostrar) si quiero cambiar colores entre SocialPoint - Event
                                 val bitmap1 = Bitmap.createScaledBitmap(viewToBitmap(cardView)!!, cardView.width, cardView.height, false)
                                 val smallMarkerIcon1 = BitmapDescriptorFactory.fromBitmap(bitmap1)
@@ -309,7 +314,6 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
                                 marker?.setIcon(smallMarkerIcon1)
                             }
                         }
-
                     }
                 }
             }
@@ -319,7 +323,6 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         })
     }
-
     private fun setup(email: String, provider: String){
         title = "Inicio"
 
