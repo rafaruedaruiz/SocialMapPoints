@@ -51,7 +51,7 @@ class MyPointsActivity : AppCompatActivity() {
     }
 
 
-    private inner class PointsAdapter(private val points: List<SocialPoint>, private val ids: List<String>) :
+     private inner class PointsAdapter(private val points: List<SocialPoint>, private val ids: List<String>) :
         RecyclerView.Adapter<PointsAdapter.ViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

@@ -3,8 +3,15 @@ package com.rafa.socialmappoints
 import android.content.Intent
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.google.firebase.auth.FirebaseAuth
@@ -54,6 +61,76 @@ class InfoUserActivity : AppCompatActivity() {
                 }
         }else{
             editUserButton.visibility = View.GONE
+        }
+
+        // Cargar puntos creados por el usuario
+        val socialPointsList = mutableListOf<SocialPoint>()
+        val pointsIds = mutableListOf<String>()
+        val databaseRef = FirebaseDatabase.getInstance().reference
+        val socialPointsRef = databaseRef.child("social_points")
+        socialPointsRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (socialPointSnapshot in dataSnapshot.children) {
+                    // Obtener los datos de cada "social_point"
+                    val socialPoint = socialPointSnapshot.getValue(SocialPoint::class.java)
+
+                    // Verificar si el "social_point" pertenece al usuario del perfil
+                    if (socialPoint!!.userID == userId) {
+                        // Agregar el "social_point" a la lista
+                        socialPointsList.add(socialPoint)
+                        pointsIds.add(socialPointSnapshot.key.toString())
+                    }
+                }
+                val recyclerView = findViewById<RecyclerView>(R.id.pointsRecyclerView)
+                recyclerView.layoutManager = LinearLayoutManager(this@InfoUserActivity)
+                recyclerView.adapter = PointsAdapter2(socialPointsList, pointsIds)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Manejar el error
+            }
+        })
+
+    }
+
+    private inner class PointsAdapter2(private val points: List<SocialPoint>, private val ids: List<String>) :
+        RecyclerView.Adapter<PointsAdapter2.ViewHolder>() {
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+            val view = LayoutInflater.from(parent.context)
+                .inflate(R.layout.view_point_on_list, parent, false)
+            return ViewHolder(view)
+        }
+
+        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+            val point = points[position]
+            val idPoint = ids[position]
+            holder.bind(point, idPoint)
+        }
+
+        override fun getItemCount(): Int = points.size
+
+        inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
+            private val logo: ImageView = view.findViewById(R.id.imageLogo)
+            private val title: TextView = view.findViewById(R.id.tituloTextView)
+            private val goButton: ImageButton = view.findViewById(R.id.goButton)
+
+            fun bind(point: SocialPoint, idPoint: String) {                   // FALTA POR CONFIGURAR EL TIPO DE LOGO QUE SALE DEPENDIENDO DE SI ES SOCIALPOINT O EVENT
+                title.text = point.title
+
+                title.setOnClickListener {
+                    val intent = Intent(itemView.context, InfoSocialPointActivity::class.java)
+                    intent.putExtra("socialPointId", idPoint)
+                    itemView.context.startActivity(intent)
+                }
+
+                goButton.setOnClickListener {
+                    val intent = Intent(itemView.context, InfoSocialPointActivity::class.java)
+                    intent.putExtra("socialPointId", idPoint)
+                    itemView.context.startActivity(intent)
+                }
+            }
         }
     }
 }
