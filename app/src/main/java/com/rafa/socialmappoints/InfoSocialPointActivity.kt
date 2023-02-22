@@ -274,6 +274,18 @@ private class CommentAdapter(private val comments: MutableList<Comment>) : Recyc
             }.addOnFailureListener { exception ->
                 // Manejar el error
             }
+
+            authorPhoto.setOnClickListener {
+                val profileIntent = Intent(itemView.context, InfoUserActivity::class.java)
+                profileIntent.putExtra("userId", comment.userId)
+                itemView.context.startActivity(profileIntent)
+            }
+
+            authorUsername.setOnClickListener {
+                val profileIntent = Intent(itemView.context, InfoUserActivity::class.java)
+                profileIntent.putExtra("userId", comment.userId)
+                itemView.context.startActivity(profileIntent)
+            }
         }
     }
 }
