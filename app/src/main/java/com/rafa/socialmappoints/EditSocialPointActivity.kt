@@ -79,7 +79,11 @@ class EditSocialPointActivity : AppCompatActivity() {
 
         saveButton.setOnClickListener {
             saveSocialPoint(socialPoint)
-            Toast.makeText(this@EditSocialPointActivity, "Punto Social editado con éxito", Toast.LENGTH_SHORT).show()
+            val toast = Toast.makeText(this, "", Toast.LENGTH_SHORT)
+            val toastView = LayoutInflater.from(this).inflate(R.layout.toast_layout, null)
+            toastView.findViewById<TextView>(R.id.toastMessage).text = "Punto Social editado con éxito"
+            toast.view = toastView
+            toast.show()
 
             // Volvemos a la vista anterior pero con los datos actualizados
             val socialPointInfoIntent = Intent(this, InfoSocialPointActivity::class.java)

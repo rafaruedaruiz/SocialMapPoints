@@ -6,10 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -63,14 +60,24 @@ class AddPointActivity : AppCompatActivity() {
 
             if(title.isNotEmpty()){
                 saveSocialPoint(socialPoint)
-                Toast.makeText(this, "Punto Social añadido con éxito", Toast.LENGTH_SHORT).show()
+
+                val toast = Toast.makeText(this, "", Toast.LENGTH_SHORT)
+                val toastView = LayoutInflater.from(this).inflate(R.layout.toast_layout, null)
+                toastView.findViewById<TextView>(R.id.toastMessage).text = "Punto Social añadido con éxito"
+                toast.view = toastView
+                toast.show()
+
                 val homeIntent = Intent(this, HomeActivity::class.java)
                 homeIntent.putExtra("lat", latitude)
                 homeIntent.putExtra("lng", longitude)
                 startActivity(homeIntent)
                 finish()
             }else{
-                Toast.makeText(this, "Por favor, rellene los campos necesarios", Toast.LENGTH_SHORT).show()
+                val toast = Toast.makeText(this, "", Toast.LENGTH_SHORT)
+                val toastView = LayoutInflater.from(this).inflate(R.layout.toast_layout, null)
+                toastView.findViewById<TextView>(R.id.toastMessage).text = "Por favor, rellene los campos necesarios"
+                toast.view = toastView
+                toast.show()
             }
         }
     }

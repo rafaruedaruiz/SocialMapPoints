@@ -159,7 +159,12 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun requestLocationPermission() {
         if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)) {
-            Toast.makeText(this, "Ve a ajustes y acepta los permisos", Toast.LENGTH_SHORT).show()
+
+            val toast = Toast.makeText(this, "", Toast.LENGTH_SHORT)
+            val toastView = LayoutInflater.from(this).inflate(R.layout.toast_layout, null)
+            toastView.findViewById<TextView>(R.id.toastMessage).text = "Ve a ajustes y acepta los permisos"
+            toast.view = toastView
+            toast.show()
         } else {
             ActivityCompat.requestPermissions(this,
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
@@ -178,7 +183,12 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
             REQUEST_CODE_LOCATION -> if(grantResults.isNotEmpty() && grantResults[0]==PackageManager.PERMISSION_GRANTED){
                 map.isMyLocationEnabled = true
             }else{
-                Toast.makeText(this, "Para activar la localización ve a ajustes y acepta los permisos", Toast.LENGTH_SHORT).show()
+
+                val toast = Toast.makeText(this, "", Toast.LENGTH_SHORT)
+                val toastView = LayoutInflater.from(this).inflate(R.layout.toast_layout, null)
+                toastView.findViewById<TextView>(R.id.toastMessage).text = "Para activar la localización ve a ajustes y acepta los permisos"
+                toast.view = toastView
+                toast.show()
             }
             else -> {}
         }
@@ -190,7 +200,12 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
         if (!::map.isInitialized) return
         if(!isPermissionsGranted()){
             map.isMyLocationEnabled = false
-            Toast.makeText(this, "Para activar la localización ve a ajustes y acepta los permisos", Toast.LENGTH_SHORT).show()
+
+            val toast = Toast.makeText(this, "", Toast.LENGTH_SHORT)
+            val toastView = LayoutInflater.from(this).inflate(R.layout.toast_layout, null)
+            toastView.findViewById<TextView>(R.id.toastMessage).text = "Para activar la localización ve a ajustes y acepta los permisos"
+            toast.view = toastView
+            toast.show()
         }
     }
 
@@ -368,7 +383,11 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
                 addPointIntent.putExtra("longitude", marker!!.position.longitude)
                 startActivity(addPointIntent)
             } else {
-                Toast.makeText(this, "Por favor, primero selecciona el punto en el mapa", Toast.LENGTH_SHORT).show()
+                val toast = Toast.makeText(this, "", Toast.LENGTH_SHORT)
+                val toastView = LayoutInflater.from(this).inflate(R.layout.toast_layout, null)
+                toastView.findViewById<TextView>(R.id.toastMessage).text = "Por favor, primero selecciona el punto en el mapa"
+                toast.view = toastView
+                toast.show()
             }
         }
     }

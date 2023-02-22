@@ -178,7 +178,12 @@ class InfoSocialPointActivity : AppCompatActivity() {
                 builder.setPositiveButton("Eliminar") { _, _ ->
                     // Elimina el SocialPoint de Realtime Database
                     socialPointRef.removeValue()
-                    Toast.makeText(this, "Punto Social eliminado con éxito", Toast.LENGTH_SHORT).show()
+
+                    val toast = Toast.makeText(this, "", Toast.LENGTH_SHORT)
+                    val toastView = LayoutInflater.from(this).inflate(R.layout.toast_layout, null)
+                    toastView.findViewById<TextView>(R.id.toastMessage).text = "Punto Social eliminado con éxito"
+                    toast.view = toastView
+                    toast.show()
                     val homeIntent = Intent(this, HomeActivity::class.java)
                     startActivity(homeIntent)
                 }
