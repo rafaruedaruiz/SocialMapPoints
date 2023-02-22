@@ -1,5 +1,6 @@
 package com.rafa.socialmappoints
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.view.View
@@ -46,7 +47,11 @@ class InfoUserActivity : AppCompatActivity() {
 
         if(userId == FirebaseAuth.getInstance().currentUser?.uid){  // Si el usuario visita su propio perfil le sale el boton de editar
                 editUserButton.visibility = View.VISIBLE
-
+                editUserButton.setOnClickListener {
+                    val editProfileIntent = Intent(this, EditUserActivity::class.java)
+                    editProfileIntent.putExtra("userId", FirebaseAuth.getInstance().currentUser?.uid)
+                    startActivity(editProfileIntent)
+                }
         }else{
             editUserButton.visibility = View.GONE
         }

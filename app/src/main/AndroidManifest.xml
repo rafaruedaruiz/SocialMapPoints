@@ -27,6 +27,9 @@
         <activity android:name=".InfoUserActivity"
             android:exported="true">
         </activity>
+        <activity android:name=".EditUserActivity"
+            android:exported="true">
+        </activity>
         <activity android:name=".MyPointsActivity"
             android:exported="true">
         </activity>
