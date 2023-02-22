@@ -145,22 +145,33 @@ class InfoSocialPointActivity : AppCompatActivity() {
                     val dateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.systemDefault())
                     val formatter = DateTimeFormatter.ofPattern("dd/MM HH:mm")
                     val formattedDateTime = dateTime.format(formatter)
+                    val dateString = "El " + formattedDateTime.substring(0, 5) + " a las " + formattedDateTime.substring(6)
 
-                    val username = user?.email.toString().split("@")[0]
-                    val comment = userId?.let { Comment(it, username, commentText, formattedDateTime) }
-
-                    // Actualiza la lista de comentarios del SocialPoint en la base de datos
-                    val socialPointRef = FirebaseDatabase.getInstance().getReference().child("social_points").child(socialPointId)
-                    socialPointRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                    val userRef = FirebaseDatabase.getInstance().getReference("users").child(userId!!)
+                    userRef.addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(dataSnapshot: DataSnapshot) {
-                            val socialPoint = dataSnapshot.getValue(SocialPoint::class.java)
-                            socialPoint?.let {
-                                it.comments.add(comment!!)
-                                socialPointRef.setValue(it)
+                            if (dataSnapshot.exists()) {
+                                val username = dataSnapshot.child("username").value.toString()
+                                val comment = Comment(userId, username, commentText, dateString)
+
+                                // Actualiza la lista de comentarios del SocialPoint en la base de datos
+                                val socialPointRef = FirebaseDatabase.getInstance().getReference().child("social_points").child(socialPointId)
+                                socialPointRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                        val socialPoint = dataSnapshot.getValue(SocialPoint::class.java)
+                                        socialPoint?.let {
+                                            it.comments.add(comment)
+                                            socialPointRef.setValue(it)
+                                        }
+                                    }
+
+                                    override fun onCancelled(error: DatabaseError) {
+                                        // Manejar el error
+                                    }
+                                })
                             }
                         }
-
-                        override fun onCancelled(error: DatabaseError) {
+                        override fun onCancelled(databaseError: DatabaseError) {
                             // Manejar el error
                         }
                     })
@@ -259,7 +270,7 @@ private class CommentAdapter(private val comments: MutableList<Comment>) : Recyc
 
             val user = FirebaseAuth.getInstance().currentUser
             val storageRef = Firebase.storage.reference
-            val photoRef = storageRef.child("profile_photos/${user?.uid}/default_user_photo.jpg")
+            val photoRef = storageRef.child("profile_photos/${user?.uid}/user_photo.jpg")
             photoRef.downloadUrl.addOnSuccessListener { uri ->
                 // Cargar la imagen con Glide
                 Glide.with(itemView.context).load(uri).transform(CircleCrop()).into(authorPhoto)

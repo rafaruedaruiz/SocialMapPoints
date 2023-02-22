@@ -94,6 +94,10 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
             popup.menuInflater.inflate(R.menu.user_menu, popup.menu)
             popup.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
+                    R.id.my_profile -> {
+                        // Ir a la actividad "Mi perfil"
+                        true
+                    }
                     R.id.my_social_points -> {
                         // Ir a la actividad "Mis SocialPoint"
                         val myPointsIntent = Intent(this, MyPointsActivity::class.java)
