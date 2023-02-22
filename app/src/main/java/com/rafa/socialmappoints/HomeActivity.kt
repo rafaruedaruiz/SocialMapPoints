@@ -324,41 +324,32 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
             val userRef = FirebaseDatabase.getInstance().getReference("users").child(user.uid)
             userRef.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    if (!dataSnapshot.exists()) {
-                        // El usuario no existe en la base de datos, lo creamos
-                        val username = user.email.toString().split("@")[0]
+                    if(dataSnapshot.hasChild("username")){
+                        // Cargamos los datos del usuario para el Home
+                        userTextView.text = dataSnapshot.child("username").value.toString()
                         val storage = Firebase.storage
                         val storageRef = storage.reference
-                        val path = "profile_photos/${user.uid}/default_user_photo.jpg"
-                        val photoRef = storageRef.child(path)
-                        val defaultUserPhotoBitmap = BitmapFactory.decodeResource(resources, R.drawable.default_user_photo)
-                        val byteArrayOutputStream = ByteArrayOutputStream()
-                        defaultUserPhotoBitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
-                        val data = byteArrayOutputStream.toByteArray()
-                        val uploadTask = photoRef.putBytes(data)
-                        uploadTask.addOnSuccessListener {
-                            // La imagen se cargó correctamente
-                        }.addOnFailureListener { exception ->
-                            // Hubo un error al cargar la imagen
+                        val userId = FirebaseAuth.getInstance().currentUser?.uid
+                        val fileRef = storageRef.child("profile_photos/$userId/user_photo.jpg")
+                        fileRef.metadata.addOnSuccessListener { metadata ->
+                            if (metadata.sizeBytes == 0L) {
+                                // El archivo no existe en el Storage.
+                            } else {
+                                // El archivo ya existe en el Storage.
+                                fileRef.downloadUrl.addOnSuccessListener { uri ->
+                                    // Cargar la imagen con Glide
+                                    Glide.with(this@HomeActivity).load(uri).transform(CircleCrop()).into(userPhoto)
+                                }.addOnFailureListener { exception ->
+                                    // Manejar el error
+                                }
+                            }
                         }
-                        val newUser = User(username)
-                        userRef.setValue(newUser)
+                    }else{
+                        userTextView.text = user.email.toString().split("@")[0]
+                        Glide.with(this@HomeActivity).load(R.drawable.default_user_photo).transform(CircleCrop()).into(userPhoto)
                     }
-                    // Luego cargamos los datos del usuario para el Home
-                    userTextView.text = dataSnapshot.child("username").value as String
-                    val storageRef = Firebase.storage.reference
-                    val photoRef = storageRef.child("profile_photos/${user.uid}/default_user_photo.jpg")
-                    photoRef.downloadUrl.addOnSuccessListener { uri ->
-                        // Cargar la imagen con Glide
-                        Glide.with(this@HomeActivity).load(uri).transform(CircleCrop()).into(userPhoto)
-                    }.addOnFailureListener { exception ->
-                        // Manejar el error
-                    }
-
                 }
-
                 override fun onCancelled(databaseError: DatabaseError) {
-                    // Manejar el error
                 }
             })
         }
