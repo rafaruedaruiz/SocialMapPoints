@@ -147,35 +147,22 @@ class InfoSocialPointActivity : AppCompatActivity() {
                     val formattedDateTime = dateTime.format(formatter)
                     val dateString = "El " + formattedDateTime.substring(0, 5) + " a las " + formattedDateTime.substring(6)
 
-                    val userRef = FirebaseDatabase.getInstance().getReference("users").child(userId!!)
-                    userRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                    val comment = Comment(userId!!, commentText, dateString)
+
+                    // Actualiza la lista de comentarios del SocialPoint en la base de datos
+                    val socialPointRef = FirebaseDatabase.getInstance().getReference().child("social_points").child(socialPointId)
+                    socialPointRef.addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(dataSnapshot: DataSnapshot) {
-                            if (dataSnapshot.exists()) {
-                                val username = dataSnapshot.child("username").value.toString()
-                                val comment = Comment(userId, username, commentText, dateString)
-
-                                // Actualiza la lista de comentarios del SocialPoint en la base de datos
-                                val socialPointRef = FirebaseDatabase.getInstance().getReference().child("social_points").child(socialPointId)
-                                socialPointRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                                        val socialPoint = dataSnapshot.getValue(SocialPoint::class.java)
-                                        socialPoint?.let {
-                                            it.comments.add(comment)
-                                            socialPointRef.setValue(it)
-                                        }
-                                    }
-
-                                    override fun onCancelled(error: DatabaseError) {
-                                        // Manejar el error
-                                    }
-                                })
+                            val socialPoint = dataSnapshot.getValue(SocialPoint::class.java)
+                            socialPoint?.let {
+                                it.comments.add(comment)
+                                socialPointRef.setValue(it)
                             }
                         }
-                        override fun onCancelled(databaseError: DatabaseError) {
+                        override fun onCancelled(error: DatabaseError) {
                             // Manejar el error
                         }
                     })
-
                     commentEditText.text = null
                 }
                 return@setOnKeyListener true
@@ -264,13 +251,23 @@ private class CommentAdapter(private val comments: MutableList<Comment>) : Recyc
         val message : TextView = view.findViewById(R.id.commentMessage)
         val date : TextView = view.findViewById(R.id.commentTimestamp)
         fun bind(comment: Comment) {
-            authorUsername.text = comment.username
+            val userRef = FirebaseDatabase.getInstance().getReference("users").child(comment.userId!!)
+            userRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        authorUsername.text = dataSnapshot.child("username").value.toString()
+                    }
+                }
+                override fun onCancelled(databaseError: DatabaseError) {
+                    // Manejar el error
+                }
+            })
+
             message.text = comment.message
             date.text = comment.dateAndTime
 
-            val user = FirebaseAuth.getInstance().currentUser
             val storageRef = Firebase.storage.reference
-            val photoRef = storageRef.child("profile_photos/${user?.uid}/user_photo.jpg")
+            val photoRef = storageRef.child("profile_photos/${comment.userId}/user_photo.jpg")
             photoRef.downloadUrl.addOnSuccessListener { uri ->
                 // Cargar la imagen con Glide
                 Glide.with(itemView.context).load(uri).transform(CircleCrop()).into(authorPhoto)
