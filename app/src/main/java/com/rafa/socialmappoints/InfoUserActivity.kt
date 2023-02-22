@@ -37,6 +37,7 @@ class InfoUserActivity : AppCompatActivity() {
                     usernameTextView.text = dataSnapshot.child("username").value.toString()
                 }
             }
+
             override fun onCancelled(databaseError: DatabaseError) {
                 // Manejar el error
             }
@@ -52,14 +53,14 @@ class InfoUserActivity : AppCompatActivity() {
         }
 
 
-        if(userId == FirebaseAuth.getInstance().currentUser?.uid){  // Si el usuario visita su propio perfil le sale el boton de editar
-                editUserButton.visibility = View.VISIBLE
-                editUserButton.setOnClickListener {
-                    val editProfileIntent = Intent(this, EditUserActivity::class.java)
-                    editProfileIntent.putExtra("userId", FirebaseAuth.getInstance().currentUser?.uid)
-                    startActivity(editProfileIntent)
-                }
-        }else{
+        if (userId == FirebaseAuth.getInstance().currentUser?.uid) {  // Si el usuario visita su propio perfil le sale el boton de editar
+            editUserButton.visibility = View.VISIBLE
+            editUserButton.setOnClickListener {
+                val editProfileIntent = Intent(this, EditUserActivity::class.java)
+                editProfileIntent.putExtra("userId", FirebaseAuth.getInstance().currentUser?.uid)
+                startActivity(editProfileIntent)
+            }
+        } else {
             editUserButton.visibility = View.GONE
         }
 
@@ -83,7 +84,7 @@ class InfoUserActivity : AppCompatActivity() {
                 }
                 val recyclerView = findViewById<RecyclerView>(R.id.pointsRecyclerView)
                 recyclerView.layoutManager = LinearLayoutManager(this@InfoUserActivity)
-                recyclerView.adapter = PointsAdapter2(socialPointsList, pointsIds)
+                recyclerView.adapter = PointsAdapter(socialPointsList, pointsIds)
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -91,46 +92,5 @@ class InfoUserActivity : AppCompatActivity() {
             }
         })
 
-    }
-
-    private inner class PointsAdapter2(private val points: List<SocialPoint>, private val ids: List<String>) :
-        RecyclerView.Adapter<PointsAdapter2.ViewHolder>() {
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.view_point_on_list, parent, false)
-            return ViewHolder(view)
-        }
-
-        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            val point = points[position]
-            val idPoint = ids[position]
-            holder.bind(point, idPoint)
-        }
-
-        override fun getItemCount(): Int = points.size
-
-        inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-
-            private val logo: ImageView = view.findViewById(R.id.imageLogo)
-            private val title: TextView = view.findViewById(R.id.tituloTextView)
-            private val goButton: ImageButton = view.findViewById(R.id.goButton)
-
-            fun bind(point: SocialPoint, idPoint: String) {                   // FALTA POR CONFIGURAR EL TIPO DE LOGO QUE SALE DEPENDIENDO DE SI ES SOCIALPOINT O EVENT
-                title.text = point.title
-
-                title.setOnClickListener {
-                    val intent = Intent(itemView.context, InfoSocialPointActivity::class.java)
-                    intent.putExtra("socialPointId", idPoint)
-                    itemView.context.startActivity(intent)
-                }
-
-                goButton.setOnClickListener {
-                    val intent = Intent(itemView.context, InfoSocialPointActivity::class.java)
-                    intent.putExtra("socialPointId", idPoint)
-                    itemView.context.startActivity(intent)
-                }
-            }
-        }
     }
 }
