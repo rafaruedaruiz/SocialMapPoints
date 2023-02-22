@@ -95,17 +95,17 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
             popup.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     R.id.my_profile -> {
-                        // Ir a la actividad "Mi perfil"
+                        val myProfileIntent = Intent(this, InfoUserActivity::class.java)
+                        myProfileIntent.putExtra("userId", FirebaseAuth.getInstance().currentUser?.uid)
+                        startActivity(myProfileIntent)
                         true
                     }
                     R.id.my_social_points -> {
-                        // Ir a la actividad "Mis SocialPoint"
                         val myPointsIntent = Intent(this, MyPointsActivity::class.java)
                         startActivity(myPointsIntent)
                         true
                     }
                     R.id.my_social_events -> {
-                        // Ir a la actividad "Mis SocialEvent"
                         true
                     }
                     R.id.log_out -> {
