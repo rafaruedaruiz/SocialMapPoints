@@ -13,11 +13,11 @@
         android:id="@+id/marker_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/lavender_border"
+        android:background="@drawable/marker_text_background"
         android:padding="3dp"
         android:paddingTop="2dp"
         android:text="Esto es un titulo de ejemplo"
-        android:textColor="#050e1f"
+        android:textColor="#686868"
         android:textSize="12sp"
         android:textStyle="bold" />
 

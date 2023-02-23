@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:foregroundTint="#FFFFFF">
 
     <fragment
         android:id="@+id/map"
@@ -15,74 +16,92 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/searchView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="13dp"
-            android:layout_marginTop="7dp"
-            android:layout_marginEnd="60dp"
-            android:background="@drawable/lavender_border"
-            android:focusable="false"
-            app:closeIcon="@drawable/baseline_clear_24"
-            app:iconifiedByDefault="false"
-            app:layout_constraintEnd_toEndOf="parent"
+
+        <soup.neumorphism.NeumorphCardView
+            android:id="@+id/searchView_card"
+            style="@style/Widget.Neumorph.CardView"
+            android:layout_width="336dp"
+            android:layout_height="71dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:queryHint="Search location"
-            app:searchIcon="@drawable/search_icon" />
+            app:neumorph_backgroundColor="#DDDDDD"
+            app:neumorph_shadowElevation="4dp"
+            app:neumorph_shapeType="basin">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/searchView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:focusable="false"
+                app:closeIcon="@android:drawable/ic_menu_close_clear_cancel"
+                app:iconifiedByDefault="false"
+                app:queryHint="Buscar..."
+                app:searchIcon="@android:drawable/ic_search_category_default" />
+
+        </soup.neumorphism.NeumorphCardView>
+
+        <soup.neumorphism.NeumorphCardView
             android:id="@+id/userLayout"
+            style="@style/Widget.Neumorph.CardView"
             android:layout_width="wrap_content"
-            android:layout_height="65dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="7dp"
-            android:background="@drawable/lavender_border"
-            android:clickable="true"
-            android:orientation="horizontal"
-            android:padding="3dp"
+            android:layout_height="wrap_content"
+            android:padding="0sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/searchView">
+            app:layout_constraintTop_toBottomOf="@+id/searchView_card"
+            app:neumorph_backgroundColor="#efeeee"
+            app:neumorph_shapeType="flat">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/userPhoto"
-                android:layout_width="54dp"
-                android:layout_height="50dp"
-                app:civ_border_color="@color/white"
-                app:civ_border_width="2dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/default_user_photo" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="15sp"
+                tools:layout_editor_absoluteX="12dp"
+                tools:layout_editor_absoluteY="12dp">
 
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/userPhoto"
+                    android:layout_width="72dp"
+                    android:layout_height="66dp"
+                    android:layout_marginStart="5dp"
+                    app:civ_border_color="@color/white"
+                    app:civ_border_width="2dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/default_user_photo" />
 
-            <TextView
-                android:id="@+id/userTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="User"
-                android:textColor="#050e1f"
-                android:textSize="24sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/userPhoto"
-                app:layout_constraintTop_toTopOf="parent" />
+                <soup.neumorphism.NeumorphTextView
+                    android:id="@+id/userTextView"
+                    style="@style/Widget.Neumorph.TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="13dp"
+                    android:text="username"
+                    android:textColor="#818181"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/userPhoto"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </soup.neumorphism.NeumorphCardView>
+
+        <soup.neumorphism.NeumorphFloatingActionButton
+            android:id="@+id/addButton"
+            style="@style/Widget.Neumorph.FloatingActionButton"
+            android:layout_width="88dp"
+            android:layout_height="88dp"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="@string/app_name"
+            android:scaleType="centerInside"
+            android:src="@drawable/add_gradient"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:neumorph_backgroundColor="#efeeee" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-    <ImageButton
-        android:id="@+id/addButton"
-        android:layout_width="67dp"
-        android:layout_height="77dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="#00FFFFFF"
-        android:contentDescription="@string/app_name"
-        android:scaleType="fitCenter"
-        app:srcCompat="@drawable/boton_anadir" />
 
 </RelativeLayout>
