@@ -1,155 +1,167 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#ded8ca">
+    android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/comoLlegarButton"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="32dp"
-        android:background="@drawable/button_rounded"
-        android:text="Como llegar"
-        android:textColor="#ded8ca"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/verEnElMapaButton" />
+        android:background="#efeeee">
 
-    <Button
-        android:id="@+id/verEnElMapaButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:background="@drawable/button_rounded"
-        android:text="Ver en el mapa"
-        android:textColor="#ded8ca"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/commentEditText" />
 
-    <TextView
-        android:id="@+id/titleTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
-        android:text="Titulo"
-        android:textColor="#050e1f"
-        android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/indicator" />
+        <soup.neumorphism.NeumorphImageButton
+            android:id="@+id/editButton"
+            style="@style/Widget.Neumorph.ImageButton"
+            android:layout_width="88dp"
+            android:layout_height="88dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="10dp"
+            android:contentDescription="@string/app_name"
+            android:scaleType="centerInside"
+            android:src="@drawable/edit_icon"
+            android:visibility="visible"
+            app:layout_constraintEnd_toStartOf="@+id/verEnElMapaButton"
+            app:layout_constraintTop_toBottomOf="@+id/descriptionTextView" />
 
-    <TextView
-        android:id="@+id/descriptionTextView"
-        android:layout_width="361dp"
-        android:layout_height="54dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="32dp"
-        android:text="Descripción"
-        android:textColor="#050e1f"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
+        <soup.neumorphism.NeumorphImageButton
+            android:id="@+id/deleteButton"
+            style="@style/Widget.Neumorph.ImageButton"
+            android:layout_width="88dp"
+            android:layout_height="88dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="30dp"
+            android:contentDescription="@string/app_name"
+            android:scaleType="centerInside"
+            android:src="@drawable/delete_icon"
+            android:visibility="visible"
+            app:layout_constraintStart_toEndOf="@+id/verEnElMapaButton"
+            app:layout_constraintTop_toBottomOf="@+id/descriptionTextView" />
 
-    <ImageButton
-        android:id="@+id/deleteButton"
-        android:layout_width="101dp"
-        android:layout_height="95dp"
-        android:layout_marginEnd="60dp"
-        android:layout_marginBottom="20dp"
-        android:backgroundTint="#00FFFFFF"
-        android:contentDescription="@string/app_name"
-        android:scaleType="fitCenter"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/delete_button" />
+        <soup.neumorphism.NeumorphTextView
+            android:id="@+id/titleTextView"
+            style="@style/Widget.Neumorph.TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="32dp"
+            android:text="Título"
+            android:textColor="#818181"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageButton
-        android:id="@+id/editButton"
-        android:layout_width="104dp"
-        android:layout_height="107dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginBottom="18dp"
-        android:backgroundTint="#00FFFFFF"
-        android:contentDescription="@string/app_name"
-        android:scaleType="fitCenter"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/edit_button" />
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
-        android:layout_width="363dp"
-        android:layout_height="249dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="32dp"
-        app:cardBackgroundColor="#ded8ca"
-        app:cardCornerRadius="18dp"
-        app:cardElevation="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/viewPager2"
+        <Button
+            android:id="@+id/comoLlegarButton"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content"
+            android:layout_marginStart="110dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="110dp"
+            android:background="@drawable/button_rounded_border"
+            android:text="Como llegar"
+            android:textColor="#0f1c35"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/verEnElMapaButton" />
 
-    </androidx.cardview.widget.CardView>
+        <Button
+            android:id="@+id/verEnElMapaButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="110dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="110dp"
+            android:background="@drawable/button_rounded"
+            android:text="Ver en el mapa"
+            android:textColor="#FFFFFF"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/descriptionTextView" />
 
-    <me.relex.circleindicator.CircleIndicator3
-        android:id="@+id/indicator"
-        android:layout_width="407dp"
-        android:layout_height="25dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:background="#001E88E5"
-        app:ci_drawable="@drawable/indicator_dot"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView" />
+        <TextView
+            android:id="@+id/descriptionTextView"
+            android:layout_width="361dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="32dp"
+            android:text="Descripción"
+            android:textColor="#818181"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.428"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/indicator" />
 
-    <EditText
-        android:id="@+id/commentEditText"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:background="#FFFFFF"
-        android:backgroundTint="#C8FFFFFF"
-        android:ems="10"
-        android:hint="Escribe un comentario..."
-        android:inputType="textPersonName"
-        android:padding="10dp"
-        android:textColor="#050e1f"
-        android:textColorHint="#757575"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/commentsRecyclerView" />
+        <soup.neumorphism.NeumorphCardView
+            android:id="@+id/cardView"
+            android:layout_width="396dp"
+            android:layout_height="260dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/titleTextView">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/commentsRecyclerView"
-        android:layout_width="0dp"
-        android:layout_height="200dp"
-        android:background="#FFFFFF"
-        android:backgroundTint="#CEFFFFFF"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/descriptionTextView"
-        tools:listitem="@layout/view_comment_on_list" />
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/viewPager2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#efeeee" />
+        </soup.neumorphism.NeumorphCardView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <me.relex.circleindicator.CircleIndicator3
+            android:id="@+id/indicator"
+            android:layout_width="407dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:background="#001E88E5"
+            app:ci_drawable="@drawable/indicator_dot"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView" />
+
+        <EditText
+            android:id="@+id/commentEditText"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/menu_border_rounded"
+            android:backgroundTint="#C8FFFFFF"
+            android:ems="10"
+            android:hint="Escribe un comentario..."
+            android:inputType="textPersonName"
+            android:padding="10dp"
+            android:textColor="#050e1f"
+            android:textColorHint="#757575"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/comoLlegarButton" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/commentsRecyclerView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="#efeeee"
+            android:backgroundTint="#efeeee"
+            android:clickable="false"
+            android:padding="8dp"
+            android:paddingTop="0dp"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/commentEditText"
+            tools:listitem="@layout/view_comment_on_list" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
