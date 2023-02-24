@@ -1,38 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="16dp"
-    android:background="@drawable/list_border_rounded"
     android:elevation="8dp">
 
-    <ImageView
-        android:id="@+id/imageLogo"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:alpha="0.14"
-        android:scaleType="centerCrop"
-        android:src="@drawable/logo_reducido_sin_fondo" />
+    <soup.neumorphism.NeumorphCardView
+        android:id="@+id/socialPointCardView2"
+        android:layout_width="250dp"
+        android:layout_height="310dp"
+        android:layout_gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
-    <TextView
-        android:id="@+id/tituloTextView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="16dp"
-        android:text="Título"
-        android:textColor="#050e1f"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <ImageButton
-        android:id="@+id/goButton"
-        android:layout_width="83dp"
-        android:layout_height="73dp"
-        android:layout_gravity="end|center_vertical"
-        android:background="@android:color/transparent"
-        android:contentDescription="@string/app_name"
-        android:padding="16dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/go_button" />
+            <ImageView
+                android:id="@+id/spImage"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintDimensionRatio="H,3:2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
+            <TextView
+                android:id="@+id/tituloTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:text="Título"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textColor="#818181"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/spImage" />
+
+            <TextView
+                android:id="@+id/spDescription"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:text="Esto es la descripción. Esto es la descripción.  Esto es la descripción. "
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="#818181"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tituloTextView" />
+
+            <ImageView
+                android:id="@+id/imageLogo"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:alpha="0.08"
+                android:scaleType="centerCrop"
+                android:src="@drawable/logo_reducido_sin_fondo"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/spImage" />
+
+            <soup.neumorphism.NeumorphButton
+                android:id="@+id/leerMasButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="Leer más"
+                android:textAllCaps="true"
+                android:textColor="#818181"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/spDescription" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </soup.neumorphism.NeumorphCardView>
 </FrameLayout>

@@ -1,6 +1,7 @@
 package com.rafa.socialmappoints
 
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,12 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
+import kotlinx.android.synthetic.main.activity_edit_user.*
+import soup.neumorphism.NeumorphCardView
 
 class PointsAdapter (private val points: List<SocialPoint>, private val ids: List<String>) :
     RecyclerView.Adapter<PointsAdapter.ViewHolder>() {
@@ -30,18 +37,31 @@ class PointsAdapter (private val points: List<SocialPoint>, private val ids: Lis
 
         private val logo: ImageView = view.findViewById(R.id.imageLogo)
         private val title: TextView = view.findViewById(R.id.tituloTextView)
-        private val goButton: ImageButton = view.findViewById(R.id.goButton)
+        private val spImage: ImageView = view.findViewById(R.id.spImage)
+        private val spDescription: TextView = view.findViewById(R.id.spDescription)
+        private val socialPointCardView2: NeumorphCardView = view.findViewById(R.id.socialPointCardView2)
 
         fun bind(point: SocialPoint, idPoint: String) {                   // FALTA POR CONFIGURAR EL TIPO DE LOGO QUE SALE DEPENDIENDO DE SI ES SOCIALPOINT O EVENT
             title.text = point.title
+            spDescription.text = point.description
 
-            title.setOnClickListener {
-                val intent = Intent(itemView.context, InfoSocialPointActivity::class.java)
-                intent.putExtra("socialPointId", idPoint)
-                itemView.context.startActivity(intent)
+            val storageRef = Firebase.storage.reference.child("images").child(idPoint)
+            storageRef.listAll().addOnSuccessListener { listResult ->
+                // Obtener el primer archivo de la lista
+                val imageRef = listResult.items.firstOrNull()
+                if (imageRef != null) {
+                    // Descargar la imagen
+                    imageRef.downloadUrl.addOnSuccessListener { uri ->
+                        // Aquí puedes cargar la imagen usando la URL de descarga
+                        Glide.with(itemView.context).load(uri).into(spImage)
+                    }.addOnFailureListener { exception ->
+                    }
+                }
+            }.addOnFailureListener { exception ->
             }
 
-            goButton.setOnClickListener {
+
+            socialPointCardView2.setOnClickListener {
                 val intent = Intent(itemView.context, InfoSocialPointActivity::class.java)
                 intent.putExtra("socialPointId", idPoint)
                 itemView.context.startActivity(intent)
