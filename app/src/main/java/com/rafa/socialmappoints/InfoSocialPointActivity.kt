@@ -3,6 +3,7 @@ package com.rafa.socialmappoints
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Rect
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -126,6 +127,9 @@ class InfoSocialPointActivity : AppCompatActivity() {
 
         commentRecyclerView.layoutManager = LinearLayoutManager(this)
         commentRecyclerView.adapter = commentAdapter
+        val verticalSpaceItemDecoration = VerticalSpaceItemDecoration(20)
+        commentRecyclerView.addItemDecoration(verticalSpaceItemDecoration)
+
 
         // Recoger imagenes de firebase storage
         val imagesRef = storageRef.child("images/$socialPointId")
@@ -239,6 +243,12 @@ class InfoSocialPointActivity : AppCompatActivity() {
             startActivity(homeIntent)
             finish()
         }
+    }
+}
+
+class VerticalSpaceItemDecoration(private val spaceHeight: Int) : RecyclerView.ItemDecoration() {
+    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+        outRect.bottom = spaceHeight
     }
 }
 
