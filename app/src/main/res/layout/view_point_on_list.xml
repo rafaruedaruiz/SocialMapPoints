@@ -9,8 +9,9 @@
     <soup.neumorphism.NeumorphCardView
         android:id="@+id/socialPointCardView2"
         android:layout_width="250dp"
-        android:layout_height="310dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:padding="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -66,18 +67,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/spImage" />
-
-            <soup.neumorphism.NeumorphButton
-                android:id="@+id/leerMasButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="Leer más"
-                android:textAllCaps="true"
-                android:textColor="#818181"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/spDescription" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -105,7 +105,7 @@
         android:layout_width="0dp"
         android:layout_height="55dp"
         android:layout_marginStart="28dp"
-        android:layout_marginTop="42dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="28dp"
         android:background="@drawable/menu_super_rounded"
         android:backgroundTint="#72FFFFFF"

@@ -7,11 +7,6 @@
         android:layout_height="wrap_content"
         android:title="Mi perfil" />
     <item
-        android:id="@+id/my_social_points"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:title="Mis Puntos" />
-    <item
         android:id="@+id/my_social_events"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

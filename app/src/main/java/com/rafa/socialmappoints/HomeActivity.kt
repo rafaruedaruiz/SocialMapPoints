@@ -100,11 +100,6 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
                         startActivity(myProfileIntent)
                         true
                     }
-                    R.id.my_social_points -> {
-                        val myPointsIntent = Intent(this, MyPointsActivity::class.java)
-                        startActivity(myPointsIntent)
-                        true
-                    }
                     R.id.my_social_events -> {
                         true
                     }
