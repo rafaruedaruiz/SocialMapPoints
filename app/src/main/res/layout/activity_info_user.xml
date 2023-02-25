@@ -11,7 +11,7 @@
         style="@style/Widget.Neumorph.TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:text="Username"
         android:textColor="#818181"
         android:textSize="35sp"
@@ -30,10 +30,10 @@
         android:layout_marginEnd="32dp"
         android:text="Social Points:"
         android:textColor="#818181"
-        android:textSize="30sp"
+        android:textSize="27sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.481"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editUserButton" />
 

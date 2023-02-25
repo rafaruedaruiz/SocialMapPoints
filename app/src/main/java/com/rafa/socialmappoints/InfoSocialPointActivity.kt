@@ -1,15 +1,12 @@
 package com.rafa.socialmappoints
 
 import android.app.AlertDialog
-import android.content.ContentValues.TAG
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -19,31 +16,23 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.transition.Transition
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
-import com.bumptech.glide.request.target.CustomTarget
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.database
-import com.google.firebase.firestore.auth.User
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_info_social_point.*
+import kotlinx.android.synthetic.main.activity_info_user.*
 import me.relex.circleindicator.CircleIndicator3
-import java.io.ByteArrayOutputStream
 import java.io.File
 import java.time.Instant
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -59,6 +48,7 @@ class InfoSocialPointActivity : AppCompatActivity() {
         setContentView(R.layout.activity_info_social_point)
 
         val socialPointId = intent.getStringExtra("socialPointId")
+        val storageRef = Firebase.storage.reference
 
         val viewPager2 = findViewById<ViewPager2>(R.id.viewPager2)
         val indicator = findViewById<CircleIndicator3>(R.id.indicator)
@@ -92,6 +82,40 @@ class InfoSocialPointActivity : AppCompatActivity() {
                     commentList.clear()
                     commentList.addAll(socialPoint.comments.reversed())
                     commentAdapter.notifyDataSetChanged()
+
+                    // Carga imagen y username del "Creado por"
+                    val userRef = FirebaseDatabase.getInstance().getReference("users").child(socialPoint.userID!!)
+                    userRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                userUsername.text = dataSnapshot.child("username").value.toString()
+                            }
+                        }
+
+                        override fun onCancelled(databaseError: DatabaseError) {
+                            // Manejar el error
+                        }
+                    })
+
+                    val photoRef = storageRef.child("profile_photos/${socialPoint.userID}/user_photo.jpg")
+                    photoRef.downloadUrl.addOnSuccessListener { uri ->
+                        // Cargar la imagen con Glide
+                        Glide.with(this@InfoSocialPointActivity).load(uri).transform(CircleCrop()).into(userProfilePhoto2)
+                    }.addOnFailureListener { exception ->
+                        // Manejar el error
+                    }
+
+                    userUsername.setOnClickListener {
+                        val profileIntent = Intent(this@InfoSocialPointActivity, InfoUserActivity::class.java)
+                        profileIntent.putExtra("userId", socialPoint.userID)
+                        this@InfoSocialPointActivity.startActivity(profileIntent)
+                    }
+
+                    userProfilePhoto2.setOnClickListener {
+                        val profileIntent = Intent(this@InfoSocialPointActivity, InfoUserActivity::class.java)
+                        profileIntent.putExtra("userId", socialPoint.userID)
+                        this@InfoSocialPointActivity.startActivity(profileIntent)
+                    }
                 }
             }
 
@@ -104,7 +128,6 @@ class InfoSocialPointActivity : AppCompatActivity() {
         commentRecyclerView.adapter = commentAdapter
 
         // Recoger imagenes de firebase storage
-        val storageRef = Firebase.storage.reference
         val imagesRef = storageRef.child("images/$socialPointId")
 
         imagesRef.listAll().addOnSuccessListener { listResult ->

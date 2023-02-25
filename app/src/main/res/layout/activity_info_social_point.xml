@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:nestedScrollingEnabled="false">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -11,19 +12,46 @@
         android:background="#efeeee">
 
 
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/userProfilePhoto2"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="10dp"
+            app:civ_border_color="@color/white"
+            app:civ_border_width="2dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/titleTextView"
+            app:srcCompat="@drawable/default_user_photo" />
+
+        <soup.neumorphism.NeumorphImageButton
+            android:id="@+id/comoLlegarButton"
+            style="@style/Widget.Neumorph.ImageButton"
+            android:layout_width="88dp"
+            android:layout_height="88dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="97dp"
+            android:contentDescription="@string/app_name"
+            android:scaleType="centerInside"
+            android:src="@drawable/route_icon"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="@+id/deleteButton"
+            app:layout_constraintTop_toBottomOf="@+id/descriptionTextView" />
+
         <soup.neumorphism.NeumorphImageButton
             android:id="@+id/editButton"
             style="@style/Widget.Neumorph.ImageButton"
             android:layout_width="88dp"
             android:layout_height="88dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
             android:contentDescription="@string/app_name"
             android:scaleType="centerInside"
             android:src="@drawable/edit_icon"
             android:visibility="visible"
-            app:layout_constraintEnd_toStartOf="@+id/verEnElMapaButton"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/descriptionTextView" />
 
         <soup.neumorphism.NeumorphImageButton
@@ -32,13 +60,13 @@
             android:layout_width="88dp"
             android:layout_height="88dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
             android:contentDescription="@string/app_name"
             android:scaleType="centerInside"
             android:src="@drawable/delete_icon"
             android:visibility="visible"
-            app:layout_constraintStart_toEndOf="@+id/verEnElMapaButton"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/descriptionTextView" />
 
         <soup.neumorphism.NeumorphTextView
@@ -57,31 +85,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/comoLlegarButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="110dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="110dp"
-            android:background="@drawable/button_rounded_border"
-            android:text="Como llegar"
-            android:textColor="#0f1c35"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/verEnElMapaButton" />
-
-        <Button
+        <soup.neumorphism.NeumorphImageButton
             android:id="@+id/verEnElMapaButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="110dp"
+            style="@style/Widget.Neumorph.ImageButton"
+            android:layout_width="88dp"
+            android:layout_height="88dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="108dp"
             android:layout_marginTop="20dp"
-            android:layout_marginEnd="110dp"
-            android:background="@drawable/button_rounded"
-            android:text="Ver en el mapa"
-            android:textColor="#FFFFFF"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:contentDescription="@string/app_name"
+            android:scaleType="centerInside"
+            android:src="@drawable/logo_reducido_sin_fondo"
+            android:visibility="visible"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/descriptionTextView" />
 
@@ -105,10 +120,9 @@
             android:layout_width="396dp"
             android:layout_height="260dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/titleTextView">
+            app:layout_constraintTop_toBottomOf="@+id/userProfilePhoto2">
 
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/viewPager2"
@@ -133,9 +147,9 @@
             android:id="@+id/commentEditText"
             android:layout_width="0dp"
             android:layout_height="48dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
             android:background="@drawable/menu_border_rounded"
             android:backgroundTint="#C8FFFFFF"
             android:ems="10"
@@ -155,6 +169,7 @@
             android:background="#efeeee"
             android:backgroundTint="#efeeee"
             android:clickable="false"
+            android:nestedScrollingEnabled="false"
             android:padding="8dp"
             android:paddingTop="0dp"
             android:visibility="visible"
@@ -162,6 +177,30 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/commentEditText"
             tools:listitem="@layout/view_comment_on_list" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="8dp"
+            android:text="Creado por:"
+            android:textColor="#818181"
+            android:textSize="17sp"
+            app:layout_constraintEnd_toStartOf="@+id/userProfilePhoto2"
+            app:layout_constraintTop_toTopOf="@+id/userProfilePhoto2" />
+
+        <TextView
+            android:id="@+id/userUsername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="3dp"
+            android:text="username"
+            android:textColor="#818181"
+            android:textSize="17sp"
+            app:layout_constraintStart_toEndOf="@+id/userProfilePhoto2"
+            app:layout_constraintTop_toTopOf="@+id/userProfilePhoto2" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
