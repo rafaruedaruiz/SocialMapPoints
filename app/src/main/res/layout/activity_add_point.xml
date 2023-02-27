@@ -1,46 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ded8ca">
+    android:background="#efeeee"
+    android:nestedScrollingEnabled="true">
 
-    <Button
-        android:id="@+id/addPointButton"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#efeeee">
+
+    <soup.neumorphism.NeumorphButton
+        android:id="@+id/addImageButton"
+        style="@style/Widget.Neumorph.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="32dp"
+        android:text="Añadir imágenes"
+        android:textColor="#818181"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
+
+    <soup.neumorphism.NeumorphTextView
+        android:id="@+id/anadirNuevoPunto"
+        style="@style/Widget.Neumorph.TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="32dp"
-        android:background="@drawable/button_rounded"
-        android:backgroundTint="#00a773"
-        android:text="Añadir punto"
-        android:textColor="#050e1f"
+        android:layout_marginTop="32dp"
+        android:text="Añadir un nuevo punto"
+        android:textColor="#818181"
+        android:textSize="25sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageList2" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/imageList2"
-        android:layout_width="141dp"
-        android:layout_height="153dp"
-        android:layout_marginTop="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
+    <soup.neumorphism.NeumorphTextView
+        android:id="@+id/titleTextView2"
+        style="@style/Widget.Neumorph.TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:text="Título"
+        android:textColor="#818181"
+        android:textSize="23sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addImageButton"
-        tools:listitem="@layout/view_image_on_list" />
+        app:layout_constraintTop_toBottomOf="@+id/anadirNuevoPunto" />
 
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="236dp"
-        android:layout_height="272dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+    <soup.neumorphism.NeumorphTextView
+        android:id="@+id/titleTextView4"
+        style="@style/Widget.Neumorph.TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:text="Descripción"
+        android:textColor="#818181"
+        android:textSize="23sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo" />
+        app:layout_constraintTop_toBottomOf="@+id/titleEditText" />
+
+        <Button
+            android:id="@+id/addPointButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="32dp"
+            android:background="@drawable/button_rounded"
+            android:text="Añadir punto"
+            android:textColor="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageList2" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/imageList2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/addImageButton"
+            tools:listitem="@layout/view_image_on_list" />
 
     <EditText
         android:id="@+id/titleEditText"
@@ -48,49 +100,36 @@
         android:layout_height="54dp"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
-        android:backgroundTint="#050e1f"
+        android:backgroundTint="#818181"
         android:ems="10"
         android:hint="Título"
         android:inputType="textEmailAddress"
-        android:textColor="#050e1f"
-        android:textColorHint="#050e1f"
+        android:textColor="#818181"
+        android:textColorHint="#818181"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+        app:layout_constraintTop_toBottomOf="@+id/titleTextView2" />
 
-
-    <Button
-        android:id="@+id/addImageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:backgroundTint="#00a773"
-        android:text="Añadir imágenes"
-        android:textColor="#050e1f"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout"
-        android:layout_width="0dp"
+        android:layout_width="347dp"
         android:layout_height="87dp"
         android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:textColorHint="#050e1f"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.466"
+        android:textColorHint="#818181"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleEditText">
+        app:layout_constraintTop_toBottomOf="@+id/titleTextView4">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/descriptionEditText"
             android:layout_width="match_parent"
             android:layout_height="59dp"
-            android:backgroundTint="#050e1f"
+            android:backgroundTint="#818181"
             android:hint="Descripción"
-            android:textColor="#050e1f"
-            android:textColorHint="#050e1f" />
+            android:textColor="#818181"
+            android:textColorHint="#818181" />
     </com.google.android.material.textfield.TextInputLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
