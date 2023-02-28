@@ -1,6 +1,7 @@
 package com.rafa.socialmappoints
 
 import android.content.Intent
+import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -114,6 +115,8 @@ class AddPointActivity : AppCompatActivity() {
                 // adapter
                 recyclerView.layoutManager = LinearLayoutManager(this@AddPointActivity)
                 recyclerView.adapter = ImageList2Adapter(imageUriList)
+                val verticalSpaceItemDecoration = VerticalSpaceItemDecoration2(0)
+                recyclerView.addItemDecoration(verticalSpaceItemDecoration)
             } else if (data?.data != null) {
                 imageUriList.add(data.data!!)
             }
@@ -124,6 +127,15 @@ class AddPointActivity : AppCompatActivity() {
         private const val REQUEST_CODE_SELECT_IMAGES = 1
     }
 }
+
+private class VerticalSpaceItemDecoration2(private val spaceHeight: Int) : RecyclerView.ItemDecoration() {
+
+    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+        outRect.top = spaceHeight
+        outRect.bottom = spaceHeight
+    }
+}
+
 
 private class ImageList2Adapter(private val images: MutableList<Uri>) : RecyclerView.Adapter<ImageList2Adapter.ViewHolder>() {
 

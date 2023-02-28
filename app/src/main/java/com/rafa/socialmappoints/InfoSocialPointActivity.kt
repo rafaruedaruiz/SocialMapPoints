@@ -246,7 +246,7 @@ class InfoSocialPointActivity : AppCompatActivity() {
     }
 }
 
-class VerticalSpaceItemDecoration(private val spaceHeight: Int) : RecyclerView.ItemDecoration() {
+private class VerticalSpaceItemDecoration(private val spaceHeight: Int) : RecyclerView.ItemDecoration() {
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
         outRect.bottom = spaceHeight
     }

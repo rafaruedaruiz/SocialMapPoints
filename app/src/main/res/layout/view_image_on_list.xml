@@ -14,38 +14,44 @@
         android:layout_gravity="center_horizontal">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/imageViewToDelete"
-                android:layout_width="109dp"
-                android:layout_height="53dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/menu_super_rounded"
-                android:scaleType="centerCrop"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:radius="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="1.0"
-                tools:srcCompat="@tools:sample/backgrounds/scenic" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/imageViewToDelete"
+                    android:layout_width="100dp"
+                    android:layout_height="60dp"
+                    android:scaleType="centerCrop"
+                    tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+            </androidx.cardview.widget.CardView>
+
 
             <ImageButton
                 android:id="@+id/redCrossImageButton"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
+                android:layout_width="35dp"
+                android:layout_height="40dp"
                 android:backgroundTint="#00FFFFFF"
                 android:contentDescription="@string/app_name"
-                android:scaleType="fitCenter"
+                android:scaleType="centerCrop"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/imageViewToDelete"
+                app:layout_constraintStart_toEndOf="@+id/cardView2"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+                app:srcCompat="@drawable/cancel_icon"
+                tools:ignore="TouchTargetSizeCheck" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </soup.neumorphism.NeumorphCardView>
 
 </FrameLayout>
