@@ -68,8 +68,9 @@ class InfoSocialPointActivity : AppCompatActivity() {
         val socialPointRef = socialPointId?.let { database.child("social_points").child(socialPointId) }!!
         socialPointRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                socialPoint = dataSnapshot.getValue(SocialPoint::class.java)!!
-                if (socialPoint != null) {
+                val sp = dataSnapshot.getValue(SocialPoint::class.java)
+                if (sp != null) {
+                    socialPoint = sp
                     titleTextView.text = socialPoint.title
                     descriptionTextView.text = socialPoint.description
                     if (FirebaseAuth.getInstance().currentUser?.uid.toString() == socialPoint.userID) {
