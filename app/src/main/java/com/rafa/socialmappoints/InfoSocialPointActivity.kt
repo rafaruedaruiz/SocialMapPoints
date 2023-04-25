@@ -241,9 +241,11 @@ class InfoSocialPointActivity : AppCompatActivity() {
             val homeIntent = Intent(this, HomeActivity::class.java)
             homeIntent.putExtra("lat", socialPoint.latitude)
             homeIntent.putExtra("lng", socialPoint.longitude)
+            homeIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(homeIntent)
             finish()
         }
+
     }
 }
 

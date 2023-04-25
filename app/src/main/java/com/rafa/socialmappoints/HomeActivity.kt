@@ -100,9 +100,6 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
                         startActivity(myProfileIntent)
                         true
                     }
-                    R.id.my_social_events -> {
-                        true
-                    }
                     R.id.log_out -> {
                         val builder = AlertDialog.Builder(this@HomeActivity)
                         builder.setTitle("Cerrar sesión")
