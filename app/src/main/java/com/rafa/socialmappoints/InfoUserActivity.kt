@@ -59,6 +59,7 @@ class InfoUserActivity : AppCompatActivity() {
                 val editProfileIntent = Intent(this, EditUserActivity::class.java)
                 editProfileIntent.putExtra("userId", FirebaseAuth.getInstance().currentUser?.uid)
                 startActivity(editProfileIntent)
+                finish()
             }
         } else {
             editUserButton.visibility = View.GONE

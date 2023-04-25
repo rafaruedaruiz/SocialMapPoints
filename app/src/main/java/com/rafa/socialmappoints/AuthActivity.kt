@@ -6,7 +6,10 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
@@ -86,12 +89,11 @@ class AuthActivity : AppCompatActivity() {
     }
 
     private fun showAlert(){
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("Error")
-        builder.setMessage("Se ha producido un error en la autenticación del usuario")
-        builder.setPositiveButton("Aceptar", null)
-        val dialog: AlertDialog = builder.create()
-        dialog.show()
+        val toast = Toast.makeText(this, "", Toast.LENGTH_SHORT)
+        val toastView = LayoutInflater.from(this).inflate(R.layout.toast_layout, null)
+        toastView.findViewById<TextView>(R.id.toastMessage).text = "Error de autenticación: El email o contraseña no coinciden."
+        toast.view = toastView
+        toast.show()
     }
 
     private fun showHome(email: String, provider: ProviderType){
