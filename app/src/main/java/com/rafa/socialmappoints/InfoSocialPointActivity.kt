@@ -102,7 +102,10 @@ class InfoSocialPointActivity : AppCompatActivity() {
                     val photoRef = storageRef.child("profile_photos/${socialPoint.userID}/user_photo.jpg")
                     photoRef.downloadUrl.addOnSuccessListener { uri ->
                         // Cargar la imagen con Glide
-                        Glide.with(this@InfoSocialPointActivity).load(uri).transform(CircleCrop()).into(userProfilePhoto2)
+                        if (!isDestroyed) {
+                            Glide.with(this@InfoSocialPointActivity).load(uri).transform(CircleCrop()).into(userProfilePhoto2)
+                        }
+
                     }.addOnFailureListener { exception ->
                         // Manejar el error
                     }
@@ -311,7 +314,9 @@ private class CommentAdapter(private val comments: MutableList<Comment>) : Recyc
             val photoRef = storageRef.child("profile_photos/${comment.userId}/user_photo.jpg")
             photoRef.downloadUrl.addOnSuccessListener { uri ->
                 // Cargar la imagen con Glide
-                Glide.with(itemView.context).load(uri).transform(CircleCrop()).into(authorPhoto)
+                if (!(itemView.context as InfoSocialPointActivity).isDestroyed) {
+                    Glide.with(itemView.context).load(uri).transform(CircleCrop()).into(authorPhoto)
+                }
             }.addOnFailureListener { exception ->
                 // Manejar el error
             }

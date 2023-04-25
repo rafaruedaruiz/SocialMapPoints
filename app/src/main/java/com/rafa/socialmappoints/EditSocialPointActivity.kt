@@ -49,13 +49,13 @@ class EditSocialPointActivity : AppCompatActivity() {
         val socialPointRef = socialPointId.let { database.child("social_points").child(it) }!!
         socialPointRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                socialPoint = dataSnapshot.getValue(SocialPoint::class.java)!!
-                if (socialPoint != null) {
+                val tempSocialPoint = dataSnapshot.getValue(SocialPoint::class.java)
+                if (tempSocialPoint != null) {
+                    socialPoint = tempSocialPoint
                     titleEditText2.setText(socialPoint.title)
                     descriptionET.setText(socialPoint.description)
                 }
             }
-
             override fun onCancelled(error: DatabaseError) {
                 // gestionar errores
             }
