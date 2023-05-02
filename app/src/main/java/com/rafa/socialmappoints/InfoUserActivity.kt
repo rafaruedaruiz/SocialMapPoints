@@ -39,17 +39,14 @@ class InfoUserActivity : AppCompatActivity() {
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
-                // Manejar el error
             }
         })
 
         val storageRef = Firebase.storage.reference
         val photoRef = storageRef.child("profile_photos/${userId}/user_photo.jpg")
         photoRef.downloadUrl.addOnSuccessListener { uri ->
-            // Cargar la imagen con Glide
             Glide.with(this).load(uri).transform(CircleCrop()).into(userProfilePhoto)
         }.addOnFailureListener { exception ->
-            // Manejar el error
         }
 
 
@@ -89,7 +86,6 @@ class InfoUserActivity : AppCompatActivity() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                // Manejar el error
             }
         })
 

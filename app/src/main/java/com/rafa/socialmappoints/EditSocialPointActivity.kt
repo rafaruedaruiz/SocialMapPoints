@@ -57,7 +57,6 @@ class EditSocialPointActivity : AppCompatActivity() {
                 }
             }
             override fun onCancelled(error: DatabaseError) {
-                // gestionar errores
             }
         })
 
@@ -134,13 +133,12 @@ class EditSocialPointActivity : AppCompatActivity() {
                 recyclerView.adapter?.notifyItemInserted(images.size - 1)
             }
         }.addOnFailureListener { exception ->
-            // Manejar la excepción
         }
     }
 
     private fun saveSocialPoint(socialPoint: SocialPoint?) {
         socialPoint?.let {
-            it.title = titleEditText2.text.toString()     // AÑADIR EL RESTO DE ATRIBUTOS DE SOCIALPOINT !!!!
+            it.title = titleEditText2.text.toString()
             it.description = descriptionET.text.toString()
 
             if(it.title.isNotEmpty()){
@@ -174,7 +172,6 @@ private class ImageListAdapter(private val images: MutableList<String>, private 
                val imageUrl = uri.toString()
                Glide.with(itemView.context).load(imageUrl).into(imageView)
            }.addOnFailureListener { exception ->
-               // Manejar la excepción
            }
 
            deleteButton.setOnClickListener {

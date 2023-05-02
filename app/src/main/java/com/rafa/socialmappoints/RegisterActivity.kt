@@ -28,7 +28,6 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
-        // Setup
         setup()
     }
 
@@ -77,14 +76,11 @@ class RegisterActivity : AppCompatActivity() {
                     val data = byteArrayOutputStream.toByteArray()
                     val uploadTask = photoRef.putBytes(data)
                     uploadTask.addOnSuccessListener {
-                        // La imagen se cargó correctamente
                     }.addOnFailureListener { exception ->
-                        // Hubo un error al cargar la imagen
                     }
                 }
             }
             override fun onCancelled(databaseError: DatabaseError) {
-                // Manejar el error
             }
         })
     }

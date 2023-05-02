@@ -36,7 +36,6 @@ class AuthActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_auth)
 
-        // Setup
         setup()
         session()
     }
@@ -118,14 +117,11 @@ class AuthActivity : AppCompatActivity() {
                         val data = byteArrayOutputStream.toByteArray()
                         val uploadTask = photoRef.putBytes(data)
                         uploadTask.addOnSuccessListener {
-                            // La imagen se cargó correctamente
                         }.addOnFailureListener { exception ->
-                            // Hubo un error al cargar la imagen
                         }
                     }
                 }
                 override fun onCancelled(databaseError: DatabaseError) {
-                    // Manejar el error
                 }
             })
         }

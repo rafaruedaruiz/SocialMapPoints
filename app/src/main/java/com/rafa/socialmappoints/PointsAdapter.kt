@@ -41,7 +41,7 @@ class PointsAdapter (private val points: List<SocialPoint>, private val ids: Lis
         private val spDescription: TextView = view.findViewById(R.id.spDescription)
         private val socialPointCardView2: NeumorphCardView = view.findViewById(R.id.socialPointCardView2)
 
-        fun bind(point: SocialPoint, idPoint: String) {                   // FALTA POR CONFIGURAR EL TIPO DE LOGO QUE SALE DEPENDIENDO DE SI ES SOCIALPOINT O EVENT
+        fun bind(point: SocialPoint, idPoint: String) {
             title.text = point.title
             spDescription.text = point.description
 
@@ -52,7 +52,6 @@ class PointsAdapter (private val points: List<SocialPoint>, private val ids: Lis
                 if (imageRef != null) {
                     // Descargar la imagen
                     imageRef.downloadUrl.addOnSuccessListener { uri ->
-                        // Aquí puedes cargar la imagen usando la URL de descarga
                         Glide.with(itemView.context).load(uri).into(spImage)
                     }.addOnFailureListener { exception ->
                     }

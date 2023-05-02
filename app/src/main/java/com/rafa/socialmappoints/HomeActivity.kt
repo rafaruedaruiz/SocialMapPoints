@@ -255,7 +255,7 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
         loadMarkers()
 
         map.setOnMarkerClickListener { clickedMarker ->
-            if(clickedMarker.tag.toString() != "marker_set"){  // soluciona error de clickar sobre el marker_set
+            if(clickedMarker.tag.toString() != "marker_set"){  // para que no se pueda clickar sobre el marker_set
                 val SocialPointInfoIntent = Intent(this, InfoSocialPointActivity::class.java)
                 SocialPointInfoIntent.putExtra("socialPointId", clickedMarker.tag.toString())
                 startActivity(SocialPointInfoIntent)
@@ -293,7 +293,7 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
                     if (socialPoint != null) {
                         if(filter.length == 0){  // si no tiene filtro carga todo
                             text.text = socialPoint.title
-                            // icon = (tipo de icono a mostrar) si quiero cambiar colores entre SocialPoint - Event
+                            // icon = (tipo de icono a mostrar) por si quiero cambiar colores
                             val bitmap1 = Bitmap.createScaledBitmap(viewToBitmap(cardView)!!, cardView.width, cardView.height, false)
                             val smallMarkerIcon1 = BitmapDescriptorFactory.fromBitmap(bitmap1)
 
@@ -310,7 +310,7 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
                             }
                             if (found) {
                                 text.text = socialPoint.title
-                                // icon = (tipo de icono a mostrar) si quiero cambiar colores entre SocialPoint - Event
+                                // icon = (tipo de icono a mostrar) por si quiero cambiar colores
                                 val bitmap1 = Bitmap.createScaledBitmap(viewToBitmap(cardView)!!, cardView.width, cardView.height, false)
                                 val smallMarkerIcon1 = BitmapDescriptorFactory.fromBitmap(bitmap1)
 
@@ -326,7 +326,6 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                // Controlar error
             }
         })
     }
@@ -354,7 +353,6 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
                                     // Cargar la imagen con Glide
                                     Glide.with(this@HomeActivity).load(uri).transform(CircleCrop()).into(userPhoto)
                                 }.addOnFailureListener { exception ->
-                                    // Manejar el error
                                 }
                             }
                         }

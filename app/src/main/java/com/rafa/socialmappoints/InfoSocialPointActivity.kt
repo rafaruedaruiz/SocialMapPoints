@@ -95,19 +95,16 @@ class InfoSocialPointActivity : AppCompatActivity() {
                         }
 
                         override fun onCancelled(databaseError: DatabaseError) {
-                            // Manejar el error
                         }
                     })
 
                     val photoRef = storageRef.child("profile_photos/${socialPoint.userID}/user_photo.jpg")
                     photoRef.downloadUrl.addOnSuccessListener { uri ->
-                        // Cargar la imagen con Glide
                         if (!isDestroyed) {
                             Glide.with(this@InfoSocialPointActivity).load(uri).transform(CircleCrop()).into(userProfilePhoto2)
                         }
 
                     }.addOnFailureListener { exception ->
-                        // Manejar el error
                     }
 
                     userUsername.setOnClickListener {
@@ -125,7 +122,6 @@ class InfoSocialPointActivity : AppCompatActivity() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                // gestionar errores
             }
         })
 
@@ -191,7 +187,6 @@ class InfoSocialPointActivity : AppCompatActivity() {
                             }
                         }
                         override fun onCancelled(error: DatabaseError) {
-                            // Manejar el error
                         }
                     })
                     commentEditText.text = null
@@ -303,7 +298,6 @@ private class CommentAdapter(private val comments: MutableList<Comment>) : Recyc
                     }
                 }
                 override fun onCancelled(databaseError: DatabaseError) {
-                    // Manejar el error
                 }
             })
 
@@ -313,12 +307,10 @@ private class CommentAdapter(private val comments: MutableList<Comment>) : Recyc
             val storageRef = Firebase.storage.reference
             val photoRef = storageRef.child("profile_photos/${comment.userId}/user_photo.jpg")
             photoRef.downloadUrl.addOnSuccessListener { uri ->
-                // Cargar la imagen con Glide
                 if (!(itemView.context as InfoSocialPointActivity).isDestroyed) {
                     Glide.with(itemView.context).load(uri).transform(CircleCrop()).into(authorPhoto)
                 }
             }.addOnFailureListener { exception ->
-                // Manejar el error
             }
 
             authorPhoto.setOnClickListener {

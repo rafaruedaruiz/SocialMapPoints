@@ -38,7 +38,6 @@ class EditUserActivity : AppCompatActivity() {
                 }
             }
             override fun onCancelled(databaseError: DatabaseError) {
-                // Manejar el error
             }
         })
 
@@ -47,7 +46,6 @@ class EditUserActivity : AppCompatActivity() {
         photoRef.downloadUrl.addOnSuccessListener { uri ->
             Glide.with(this).load(uri).transform(CircleCrop()).into(editUserProfilePhoto)
         }.addOnFailureListener { exception ->
-            // Manejar el error
         }
 
         uploadProfilePhotoButton.setOnClickListener {
